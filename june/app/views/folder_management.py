@@ -26,32 +26,38 @@ import os, shutil
 
 def folder_parents(parent_id, parents_ids=[], main_folder=None):
     
-    if parent_id is None:
-        return os.path.join(settings.COMPANY_FOLDER_PATH, main_folder)
-    
-    parents_folders = parents_ids
-    run = True
-    
-    while run:
-
-        try:
-            folderlist = user_model.FolderList.objects.get(pk = int(parent_id))
+    if main_folder is not None:
+        if parent_id is None :
+            return os.path.join(settings.COMPANY_FOLDER_PATH, main_folder)
+        
             
-            if folderlist.parent_folder is None:
-                parents_folders.append(folderlist.folder_name) 
+        parents_folders = parents_ids
+        run = True
+        
+        while run:
+
+            try:
+                folderlist = user_model.FolderList.objects.get(pk = int(parent_id))
+                
+                if folderlist.parent_folder is None:
+                    parents_folders.append(folderlist.folder_name) 
+                    run = False
+                else:
+                    parents_folders.append(folderlist.folder_name) 
+                    print(parents_folders)
+                    parent_id = folderlist.parent_folder.id
+            except:
                 run = False
-            else:
-                parents_folders.append(folderlist.folder_name) 
-                parent_id = folderlist.parent_folder
-        except:
-            run = False
 
-    parents_folders.reverse()
-       
-    old_path = os.path.join(settings.COMPANY_FOLDER_PATH, main_folder)
-    path = os.path.join(old_path, os.path.join(*parents_folders))
             
-    return path
+
+        parents_folders.reverse()
+           
+        old_path = os.path.join(settings.COMPANY_FOLDER_PATH, main_folder)
+        path = os.path.join(old_path, os.path.join(*parents_folders))
+                
+        return path
+    return False
     
 
 #======================================================================
@@ -102,7 +108,7 @@ class ManageFolderView(View):
         for folder in folderlist:
             xx = {}
             xx["company_ids"] = folder.company.id
-            xx["parent_folder_ids"] = folder.parent_folder if folder.parent_folder is not None else ""
+            xx["parent_folder_ids"] = folder.parent_folder.id if folder.parent_folder is not None else ""
             xx["form_prefix"] = "form_"+str(i)
             xx["ids"] = folder.id
             xx["form"] = company_forms.FolderForm(instance=folder, prefix="form_"+str(i))
@@ -166,7 +172,7 @@ def delete_folder(request, ins=None):
     if ins is not None:
         
         folderlist = user_model.FolderList.objects.get(pk = int(ins))        
-        fd = folder_parents(folderlist.parent_folder, [], folderlist.company.folder_name)   
+        fd = folder_parents(folderlist.parent_folder.id, [], folderlist.company.folder_name)   
         path = os.path.join(fd, folderlist.folder_name)
         
         try:
@@ -190,7 +196,11 @@ def rename_folder(request):
         ins = request.POST["ins"]
         
         folder = user_model.FolderList.objects.get(pk = int(ins))
-        fd = folder_parents(folder.parent_folder, [], folder.company.folder_name)     
+        fd = folder_parents(folder.parent_folder.id, [], folder.company.folder_name) 
+        
+        if not fd:
+            return redirect("/unauthorized/", permanent=False)    
+        
         old_path = os.path.join(fd, folder.folder_name)
         
         form = company_forms.FolderForm(request.POST,instance=folder, prefix=form_prefix)
@@ -208,5 +218,5 @@ def rename_folder(request):
         else:
             return redirect("/manage_folder/"+str(company_id)+"/"+str(parent_id)+"/", permanent=False)
     return redirect("/unauthorized/", permanent=False)    
-
+    
         
