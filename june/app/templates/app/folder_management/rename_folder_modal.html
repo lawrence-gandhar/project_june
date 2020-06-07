@@ -1,7 +1,7 @@
 <div id="rename_folder_modal_{{forloop.counter}}" class="modal" tabindex="-1" role="dialog" style="background-color:rgba(37, 38, 38, 0.56)">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-			<form action="" method="post">
+			<form action="{% url 'rename_folder' %}" method="post">
 				<div class="modal-header" style="background-color:#00dbff">
 					<h5 class="modal-title">Rename Folder</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -13,6 +13,7 @@
 					<input type="hidden" name="company_ids" value="{{i.company_ids}}">
 					<input type="hidden" name="parent_folder_ids" value="{{i.parent_folder_ids}}">
 					<input type="hidden" name="form_prefix" value="{{i.form_prefix}}">
+					<input type="hidden" name="ins" value="{{i.ids}}">
 					<div class="form-group row">
 						<label for="fname" class="col-sm-4 text-right control-label col-form-label">Folder Name</label>
 						<div class="col-sm-8">

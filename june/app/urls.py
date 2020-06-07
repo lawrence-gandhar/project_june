@@ -33,9 +33,10 @@ urlpatterns += [
     path('change_company_status/<int:ins>/<int:status>', never_cache(login_required(company_management.change_company_status)), name = 'change_company_status'),
 ] 
 
-# Company Management
+# Folder Management
 urlpatterns += [
     path('manage_folder/<int:company>/', never_cache(login_required(folder_management.ManageFolderView.as_view())), name = 'manage_folder'),
     path('manage_folder/<int:company>/<int:parent_folder>/', never_cache(login_required(folder_management.ManageFolderView.as_view())), name = 'manage_folder'),
     path('delete_folder/<int:ins>/', never_cache(login_required(folder_management.delete_folder)), name = 'delete_folder'),
+    path('rename_folder/', never_cache(login_required(folder_management.rename_folder)), name = 'rename_folder'),
 ]   

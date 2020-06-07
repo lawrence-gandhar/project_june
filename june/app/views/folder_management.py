@@ -104,6 +104,7 @@ class ManageFolderView(View):
             xx["company_ids"] = folder.company.id
             xx["parent_folder_ids"] = folder.parent_folder if folder.parent_folder is not None else ""
             xx["form_prefix"] = "form_"+str(i)
+            xx["ids"] = folder.id
             xx["form"] = company_forms.FolderForm(instance=folder, prefix="form_"+str(i))
             self.data["rename_folder_form"].append(xx)
             
@@ -152,9 +153,9 @@ class ManageFolderView(View):
             ins.save()
           
         if parent_folder is None: 
-            return redirect("/manage_folder/"+str(company))
+            return redirect("/manage_folder/"+str(company), permanent=False)
         else:
-            return redirect("/manage_folder/"+str(company)+"/"+str(parent_folder)+"/")
+            return redirect("/manage_folder/"+str(company)+"/"+str(parent_folder)+"/", permanent=False)
         
 
 #======================================================================
@@ -181,9 +182,31 @@ def delete_folder(request, ins=None):
 # Rename Folder
 #======================================================================
 #
-def rename_folder(request, ins=None):
-    if ins is not None:
-        pass 
-    return HttpResponse(0)
+def rename_folder(request):
+    if request.POST:
+        form_prefix = request.POST["form_prefix"]
+        company_id = request.POST["company_ids"]
+        parent_id = request.POST["parent_folder_ids"]
+        ins = request.POST["ins"]
+        
+        folder = user_model.FolderList.objects.get(pk = int(ins))
+        fd = folder_parents(folder.parent_folder, [], folder.company.folder_name)     
+        old_path = os.path.join(fd, folder.folder_name)
+        
+        form = company_forms.FolderForm(request.POST,instance=folder, prefix=form_prefix)
+        
+        if form.is_valid():
+        
+            new_path = os.path.join(fd,form.data[form_prefix+"-folder_name"])
+            
+            if not os.path.exists(new_path):
+                os.rename(old_path, new_path)
+                form.save()
+        
+        if parent_id =="": 
+            return redirect("/manage_folder/"+str(company_id)+"/", permanent=False)
+        else:
+            return redirect("/manage_folder/"+str(company_id)+"/"+str(parent_id)+"/", permanent=False)
+    return redirect("/unauthorized/", permanent=False)    
 
         
