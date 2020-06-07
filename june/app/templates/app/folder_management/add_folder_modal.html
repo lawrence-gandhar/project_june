@@ -1,0 +1,29 @@
+<div id="add_folder_modal" class="modal" tabindex="-1" role="dialog" style="background-color:rgba(37, 38, 38, 0.56)">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+			<form action="" method="post">
+				<div class="modal-header" style="background-color:#00dbff">
+					<h5 class="modal-title">Add Folder</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">                
+					{% csrf_token %}
+					<input type="hidden" name="company_ids" value="{{company_ids}}">
+					<input type="hidden" name="parent_folder_ids" value="{{parent_folder_ids}}">
+					<div class="form-group row">
+						<label for="fname" class="col-sm-4 text-right control-label col-form-label">Folder Name</label>
+						<div class="col-sm-8">
+							{{add_folder_form.folder_name}}
+						</div>
+					</div>	
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Save changes</button>
+					<button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>

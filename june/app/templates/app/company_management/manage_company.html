@@ -1,0 +1,81 @@
+<style>
+
+.table td{
+padding: 0.5rem 0.5rem 0.1rem 0.5rem;
+line-height: initial;
+}
+
+
+</style>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="card">
+			<div class="card-body" style="padding:0.7rem 1.25rem; text-align:right">
+				<button class="btn btn-warning" data-toggle="modal" data-target="#add_company_modal">
+					<i class="mdi mdi-24px mdi-bank"></i>					
+					<span style="display: inline;position: relative;top: -5px;">Add Company</span>
+				</button>
+			</div>
+			<table class="table table-bordered">				
+				<thead>
+					<tr>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Company Name</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Description</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Is Active</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Folder</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Added By</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Added On</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold; width:180px" scope="col" class="text-center">Actions</th>
+					</tr>
+				</thead>
+				<tbody style="font-size:11px">
+					{% for row in company_list %}
+						<tr>
+							<td>{{row.company_name|upper}}</td>
+							<td>{{row.description|default_if_none:"-"}}</td>
+							<td class="text-center">{{row.is_active}}</td>
+							<td {% if row.folder_name is None %} class="text-center" {% endif %}>
+								{{row.folder_name|default_if_none:"-"}}
+							</td>
+							<td>{{row.user}}</td>
+							<td>{{row.added_on}}</td>
+							<td class="text-center">
+								<i title="Update" style="cursor:pointer; margin-right:10px;" class="mdi mdi-18px mdi-table-edit text-success" data-toggle="modal" data-target="#edit_company_modal_{{forloop.counter}}"></i>
+								<i onclick="delete_company({{row.id}})" title="Remove" style="cursor:pointer; margin-right:10px;" class="mdi mdi-18px mdi-table-row-remove text-danger"></i>    
+								{% if row.is_active %}
+									<a title="Set To In-Active" href="{% url 'change_company_status' row.id 0 %}">
+										<i onclick="change_company_status({{row.id}})" style="cursor:pointer; margin-right:10px; color:#00e600" class="mdi mdi-18px mdi-leaf"></i>    
+									</a>
+								{% else %}
+									<a title="Set To Active" href="{% url 'change_company_status' row.id 1 %}">
+										<i style="cursor:pointer; margin-right:10px; color:#FF0000;" class="mdi mdi-18px mdi-leaf"></i>
+									</a>
+								{% endif %}
+								{% if row.folder_name is not None %}
+									<a href="{% url 'manage_folder' row.id %}">
+										<i title="Manage Folders" style="cursor:pointer; margin-right:10px;" class="mdi mdi-18px mdi-folder text-warning"></i>
+									</a>
+									<i onclick="delete_company_folder({{row.id}})" title="Remove All Folders" style="cursor:pointer; color:#FF0000" class="mdi mdi-18px mdi-folder-remove"></i>
+								{% endif %}								
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{% include 'app/company_management/add_company_modal.html' %}
+
+{% for i in edit_company_forms %}
+	{% include 'app/company_management/edit_company_modal.html' %}
+{% endfor %}
+
+<script>
+
+	csrf_token = '{{csrf_token}}';
+
+</script>

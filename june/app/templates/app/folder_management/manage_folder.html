@@ -1,0 +1,65 @@
+<style>
+
+.settings_icon{display:none}
+
+</style>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="card">			
+			<div class="card-body" style="padding:0.7rem 1.25rem; text-align:right">
+				<button class="btn btn-primary" data-toggle="modal" data-target="#add_folder_modal">
+					<i class="mdi mdi-24px mdi-folder-plus"></i>					
+					<span style="display: inline;position: relative;top: -5px;"> New Folder</span>
+				</button>
+				<button class="btn btn-danger" data-toggle="modal" data-target="#empty_folder">
+					<i class="mdi mdi-24px mdi-folder-remove"></i>					
+					<span style="display: inline;position: relative;top: -5px;"> Empty</span>
+				</button>
+				<button class="btn btn-success" data-toggle="modal" data-target="#add_file_modal">
+					<i class="mdi mdi-24px mdi-file-pdf"></i>					
+					<span style="display: inline;position: relative;top: -5px;"> Add File</span>
+				</button>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<ul style="padding:0px; margin:0px;">
+						{% for folder in folder_list %}
+							<li class="col-md-3 col-lg-2 col-xlg-2" style="float:left; list-style-type:none; cursor:pointer">
+								<div class="folder-item card">
+									<div>
+										<span class="settings_icon" style="position: absolute;position: absolute;right: 15px;top: 5px; color:#000000;" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<i class="mdi mdi-settings mdi-18px" style="margin-top:10px;"></i>
+										</span>
+										<div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="z-index:999999">
+											<a class="dropdown-item" data-toggle="modal" data-target="#rename_folder_modal_{{forloop.counter}}">
+												<i class="mdi mdi-pen"></i> Rename											
+											</a>
+											<a class="dropdown-item" onclick="delete_folder({{folder.id}})">
+												<i class="mdi mdi-close"></i> Delete
+											</a>
+										</div>
+									</div>
+									<a href="{{folder.id}}">
+										<div class="box text-center">
+											<h1 class="font-light text-warning"><i class="mdi mdi-folder"></i></h1>
+											<h6>{{folder.folder_name}}</h6>
+										</div>
+									</a>
+								</div>	
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+
+{% include 'app/folder_management/add_folder_modal.html' %}
+
+{% for i in rename_folder_form %}
+	{% include 'app/folder_management/rename_folder_modal.html' %}
+{% endfor %}
+

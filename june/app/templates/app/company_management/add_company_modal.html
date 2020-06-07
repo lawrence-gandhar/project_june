@@ -1,0 +1,41 @@
+<div id="add_company_modal" class="modal" tabindex="-1" role="dialog" style="background-color:rgba(37, 38, 38, 0.56)">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+			<form action="{% url 'add_company' %}" method="post">
+				<div class="modal-header" style="background-color:#00dbff">
+					<h5 class="modal-title">Add Company</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">                
+					{% csrf_token %}
+					<input type="hidden" name="redirecter" value="{{redirecter}}">
+					<input type="hidden" name="is_ajax" value="{{is_ajax}}">
+					<div class="form-group row">
+						<label for="fname" class="col-sm-4 text-right control-label col-form-label">Company Name</label>
+						<div class="col-sm-8">
+							{{company_form.company_name}}
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="fname" class="col-sm-4 text-right control-label col-form-label">Folder Name</label>
+						<div class="col-sm-8">
+							{{company_form.folder_name}}
+						</div>
+					</div>	
+					<div class="form-group row">
+						<label for="fname" class="col-sm-4 text-right control-label col-form-label">Description</label>
+						<div class="col-sm-8">
+							{{company_form.description}}
+						</div>
+					</div>	
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Save changes</button>
+					<button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>

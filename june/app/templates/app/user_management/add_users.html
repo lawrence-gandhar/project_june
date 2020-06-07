@@ -1,0 +1,107 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="card">
+			<form class="form-horizontal" action="" method="post">
+				{% csrf_token %}
+				<div class="card-body">
+					<h4 class="card-title" style="color:#fb0707" style="margin-bottom:25px">User Info & Permissions</h4>
+					
+					{% if errors %}
+						<div class="alert alert-warning alert-dismissible fade show" role="alert">
+							<strong>Error!</strong> {{errors}}
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+					{% endif %}
+					
+					<div class="form-group row">
+						<label for="fname" class="col-sm-3 text-right control-label col-form-label">First Name</label>
+						<div class="col-sm-9">
+							{{user_creation_form.first_name}}
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="lname" class="col-sm-3 text-right control-label col-form-label">Last Name</label>
+						<div class="col-sm-9">
+							{{user_creation_form.last_name}}
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="lname" class="col-sm-3 text-right control-label col-form-label">Username</label>
+						<div class="col-sm-9">
+							{{user_creation_form.username}}
+						</div>
+					</div>	
+					{% if not edit_mode %}					
+						<div class="form-group row">
+							<label for="lname" class="col-sm-3 text-right control-label col-form-label">Password</label>
+							<div class="col-sm-9">
+								{{user_creation_form.password1}}
+							</div>
+						</div>						
+						<div class="form-group row">
+							<label for="lname" class="col-sm-3 text-right control-label col-form-label">Confirm Password</label>
+							<div class="col-sm-9">
+								{{user_creation_form.password2}}
+							</div>
+						</div>
+					{% endif %}
+					<div class="form-group row">
+						<label for="cono1" class="col-sm-3 text-right control-label col-form-label">Email</label>
+						<div class="col-sm-9">
+							{{user_creation_form.email}}
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="cono1" class="col-sm-3 text-right control-label col-form-label">Usertype</label>
+						<div class="col-sm-9">
+							{{profile_form.usertype}}
+						</div>						
+					</div>
+					<div class="form-group row">
+						<label for="cono1" class="col-sm-3 text-right control-label col-form-label">Permissions</label>
+						<div class="col-sm-9">							
+							<div class="custom-control custom-checkbox mr-sm-2">								
+								{{profile_form.grant_all}}
+								<label class="custom-control-label" for="id_grant_all">
+									Grant Full Access
+								</label>
+							</div>							
+							<div class="custom-control custom-checkbox mr-sm-2">								
+								{{profile_form.is_create}}
+								<label class="custom-control-label" for="id_is_create">
+									Access To Create Users and Company
+								</label>
+							</div>							
+							<div class="custom-control custom-checkbox mr-sm-2">	
+								{{profile_form.is_update}}
+								<label class="custom-control-label" for="id_is_update">
+									Access To Update User and Company
+								</label>
+							</div>							
+							<div class="custom-control custom-checkbox mr-sm-2">								
+								{{profile_form.is_delete}}
+								<label class="custom-control-label" for="id_is_delete">
+									Access To Delete Users and Company
+								</label>
+							</div>							
+							<div class="custom-control custom-checkbox mr-sm-2">								
+								{{profile_form.is_upload}}
+								<label class="custom-control-label" for="id_is_upload">
+									Access To Upload Files
+								</label>
+							</div>
+						</div>
+					</div>	
+				</div>
+				<div class="border-top">
+					<div class="card-body" style="text-align:right">
+						<button type="submit" class="btn btn-primary save_button">Submit</button>
+						<button type="reset" class="btn btn-warning">Reset</button>
+					</div>
+				</div>
+			</form>
+		</div>		
+	</div>
+</div>

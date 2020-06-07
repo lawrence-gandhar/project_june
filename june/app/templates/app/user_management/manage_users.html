@@ -1,0 +1,68 @@
+<style>
+
+.table td{
+padding: 0.5rem 0.5rem 0.1rem 0.5rem;
+line-height: initial;
+}
+
+
+</style>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="card">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th scope="col" colspan="5"></th>
+						<th scope="col" colspan="5" class="text-center" style="background: #27a9e3; opacity: 1;  color:#000000; font-weight:bold;">Permissions</th>
+						<th scope="col"></th>
+					</tr>
+					<tr>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Username</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Usertype</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Firstname</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Lastname</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Email</th>
+						<th style="background: #27a9e3; opacity: 1; color:#000000; font-weight:bold;" scope="col" class="text-center">Full Access</th>						
+						<th style="background: #27a9e3; opacity: 1; color:#000000; font-weight:bold;" scope="col" class="text-center">Create</th>
+						<th style="background: #27a9e3; opacity: 1; color:#000000; font-weight:bold;" scope="col" class="text-center">Update</th>
+						<th style="background: #27a9e3; opacity: 1; color:#000000; font-weight:bold;" scope="col" class="text-center">Delete</th>
+						<th style="background: #27a9e3; opacity: 1; color:#000000; font-weight:bold;" scope="col" class="text-center">Upload</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold; width:70px" scope="col" class="text-center">Actions</th>
+					</tr>
+				</thead>
+				<tbody style="font-size:11px">
+					{% for row in users_list %}
+						<tr>
+							<td>{{row.username}}</td>
+							<td>{{row.profile.get_usertype_display}}</td>
+							<td>{{row.first_name}}</td>
+							<td>{{row.last_name}}</td>
+							<td>{{row.email}}</td>
+							<td class="text-center">{{row.profile.grant_all}}</td>
+							<td class="text-center">{{row.profile.is_create}}</td>
+							<td class="text-center">{{row.profile.is_update}}</td>
+							<td class="text-center">{{row.profile.is_delete}}</td>							
+							<td class="text-center">{{row.profile.is_upload}}</td>
+							<td class="text-center">
+								<a href="{% url 'edit_user' row.id %}">
+									<i title="Update" style="cursor:pointer; margin-right:10px;" class="mdi mdi-18px mdi-account-edit text-success"></i>
+								</a>
+								<i onclick="delete_user({{row.id}})" title="Remove" style="cursor:pointer;" class="mdi mdi-18px mdi-account-remove text-danger"></i>    
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+<script>
+
+	csrf_token = '{{csrf_token}}';
+
+</script>
