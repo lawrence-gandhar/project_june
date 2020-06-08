@@ -30,7 +30,6 @@ def folder_parents(parent_id, parents_ids=[], main_folder=None):
         if parent_id is None :
             return os.path.join(settings.COMPANY_FOLDER_PATH, main_folder)
         
-            
         parents_folders = parents_ids
         run = True
         
@@ -44,12 +43,9 @@ def folder_parents(parent_id, parents_ids=[], main_folder=None):
                     run = False
                 else:
                     parents_folders.append(folderlist.folder_name) 
-                    print(parents_folders)
                     parent_id = folderlist.parent_folder.id
             except:
                 run = False
-
-            
 
         parents_folders.reverse()
            
@@ -103,6 +99,18 @@ class ManageFolderView(View):
         
         #
         #
+        filelist = user_model.UploadedFiles.objects.filter(company = comp)
+        if parent_folder is not None:
+            filelist = filelist.filter(folder_path_id = int(parent_folder))
+        else:
+            filelist = filelist.filter(folder_path__isnull = True)
+         
+        self.data["filelist"] = filelist
+        
+        
+        
+        #
+        #
         self.data["rename_folder_form"] = []
         i = 0
         for folder in folderlist:
@@ -115,7 +123,11 @@ class ManageFolderView(View):
             self.data["rename_folder_form"].append(xx)
             
             i +=1
-                       
+         
+        #
+        # 
+        self.data["upload_file_form"] = company_forms.UploadFileForm()
+         
         return render(request, self.template_name, self.data)
 
     #
@@ -175,9 +187,11 @@ def delete_folder(request, ins=None):
         fd = folder_parents(folderlist.parent_folder.id, [], folderlist.company.folder_name)   
         path = os.path.join(fd, folderlist.folder_name)
         
+        folderlist.delete()
+        
         try:
             shutil.rmtree(path)
-            folderlist.delete()
+            
             return HttpResponse(1)
         except:
             return HttpResponse(0)

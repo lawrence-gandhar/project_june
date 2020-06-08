@@ -39,4 +39,9 @@ urlpatterns += [
     path('manage_folder/<int:company>/<int:parent_folder>/', never_cache(login_required(folder_management.ManageFolderView.as_view())), name = 'manage_folder'),
     path('delete_folder/<int:ins>/', never_cache(login_required(folder_management.delete_folder)), name = 'delete_folder'),
     path('rename_folder/', never_cache(login_required(folder_management.rename_folder)), name = 'rename_folder'),
-]   
+] 
+
+# Folder Management
+urlpatterns += [
+    path('upload_file/', never_cache(login_required(file_management.upload_file)), name = 'upload_file'),
+]      

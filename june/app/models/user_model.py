@@ -193,6 +193,19 @@ class UploadedFiles(models.Model):
         on_delete = models.CASCADE,
     )
     
+    company = models.ForeignKey(
+        Company,
+        db_index = True,
+        null = True,
+        blank = True,
+        on_delete = models.CASCADE,
+    )
+    
+    company_folder = models.BooleanField(
+        default = True,
+        db_index = True,
+    ) 
+    
     folder_path = models.ForeignKey(
         FolderList,
         db_index = True,
@@ -201,10 +214,10 @@ class UploadedFiles(models.Model):
         on_delete = models.CASCADE,
     )
     
-    uploaded_file = models.FileField(
+    uploaded_file = models.CharField(
         null = True,
         blank = True,
-        upload_to = logo_rename,
+        max_length = 250,
     )
     
     no_of_rows = models.IntegerField(

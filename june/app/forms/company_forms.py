@@ -35,4 +35,14 @@ class FolderForm(ModelForm):
         }
         
         
+#
+#
+#
+class UploadFileForm(ModelForm):
+    class Meta:
+        model = user_model.UploadedFiles
+        fields = ('uploaded_file',)
         
+        widgets = {
+            'uploaded_file' : FileInput(attrs = {'class':'form-control'}),
+        }        

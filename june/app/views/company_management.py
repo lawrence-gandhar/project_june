@@ -153,19 +153,23 @@ def edit_company(request):
 #
 
 def delete_company(request, ins=None):
+
     if request.is_ajax() and ins is not None:      
         try:
-            company = user_model.Company.objects.get(pk = int(ins))
-            folder_path = os.path.join(settings.COMPANY_FOLDER_PATH,company.folder_name)
-            try:
-                shutil.rmtree(folder_path)
-                company.delete()
-            except:
-                return HttpResponse(0)            
+            company = user_model.Company.objects.get(pk = int(ins))  
+            
+            if company.folder_name:
+                try:
+                    folder_path = os.path.join(settings.COMPANY_FOLDER_PATH,company.folder_name)
+                    shutil.rmtree(folder_path)
+                except:
+                    return HttpResponse(0)   
+            company.delete()            
             return HttpResponse(1)
         except:
             return HttpResponse(0)
     return HttpResponse(0)
+    
         
 #======================================================================
 # Delete Company Folder
