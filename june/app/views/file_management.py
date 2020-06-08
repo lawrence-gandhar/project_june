@@ -17,6 +17,7 @@ from app.forms import *
 from . import folder_management
 
 import os, shutil
+import pandas as pd
 
 
 #======================================================================
@@ -40,6 +41,25 @@ def handle_uploaded_file(f, company, parent_folder):
         with open(dest, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
+
+#======================================================================
+# Get File Path
+#======================================================================
+#
+
+def get_file_path(ins = None):
+    if ins is not None:
+        company_path = os.path.join(settings.COMPANY_FOLDER_PATH,ins.company.folder_name)
+
+        if ins.company_folder:
+            return company_path
+        else:
+            if ins.folder_path is not None:
+                folder_path = folder_management.folder_parents(ins.folder_path.id, [], company_path)
+                return folder_path
+            return False
+    return False
+
 
 #======================================================================
 # Upload File
@@ -88,3 +108,36 @@ def upload_file(request):
         else:
             return redirect('/manage_folder/'+str(company)+"/"+str(parent_folder)+"/", permanent=False)
     return redirect("/unauthorized/",permanent=False)
+
+#
+#
+#
+#
+class FileView(View):
+
+    template_name = 'app/base/base.html'
+
+    data = defaultdict()
+
+    data["included_template"] = 'app/file_management/file_view.html'
+
+    data["css_files"] = []
+    data["js_files"] = ['custom_files/js/file_management.js']
+
+    data["page_title"] = "Manage File"
+
+    #
+    #
+    #
+    def get(self, request, ins=None):
+        try:
+            file_ins = user_model.UploadedFiles.objects.get(pk = int(ins))  
+        except:
+            return redirect("/unauthorized/", permanent=False)
+
+        fd = os.path.join(get_file_path(file_ins),file_ins.uploaded_file)
+
+        df = pd.read_excel(fd, header=0)  
+        self.data["data_html"] = df.to_html()
+        return render(request, self.template_name, self.data)
+

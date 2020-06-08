@@ -41,7 +41,10 @@ urlpatterns += [
     path('rename_folder/', never_cache(login_required(folder_management.rename_folder)), name = 'rename_folder'),
 ] 
 
-# Folder Management
+# File Management
 urlpatterns += [
     path('upload_file/', never_cache(login_required(file_management.upload_file)), name = 'upload_file'),
-]      
+    path('manage_file/<int:ins>/', never_cache(login_required(file_management.FileView.as_view())), name = 'manage_file'),
+
+]    
+
