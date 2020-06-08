@@ -15,16 +15,8 @@ from app.constants import *
 #
 
 def logo_rename(instance, filename):
-
-    folder_path = instance.folder_path
+    return True
     
-    upload_path = 'csv_uploads'
-    
-    if folder_path:
-        upload_path = folder_path
-    
-    ext = filename.split('.')[-1]
-    return  os.path.join(upload_path,'{}.{}'.format(uuid4().hex, ext))
 
 
 #==========================================================================
@@ -226,7 +218,7 @@ class UploadedFiles(models.Model):
     )
     
     def __str__(self):
-        return self.user.username+" : "+self.company_name+ " : "+self.uploaded_file.path
+        return self.uploaded_file
     
     class Meta:
         verbose_name_plural = "Uploaded_Files_Table"

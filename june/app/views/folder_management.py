@@ -103,11 +103,9 @@ class ManageFolderView(View):
         if parent_folder is not None:
             filelist = filelist.filter(folder_path_id = int(parent_folder))
         else:
-            filelist = filelist.filter(folder_path__isnull = True)
+            filelist = filelist.filter(company_folder = True, folder_path__isnull = True)
          
         self.data["filelist"] = filelist
-        
-        
         
         #
         #
