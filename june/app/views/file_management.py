@@ -138,6 +138,15 @@ class FileView(View):
         fd = os.path.join(get_file_path(file_ins),file_ins.uploaded_file)
 
         df = pd.read_excel(fd, header=0)  
-        self.data["data_html"] = df.to_html()
+
+        #
+        # Fill NAN columns with 0
+
+        df.fillna("", inplace=True)
+
+        frame_contents = df.to_html()
+
+
+        self.data["data_html"] = frame_contents
         return render(request, self.template_name, self.data)
 
