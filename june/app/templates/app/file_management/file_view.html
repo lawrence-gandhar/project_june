@@ -9,6 +9,18 @@
     <div class="col-md-12">
         <div class="card">			
             <div class="card-body" style="padding:0.7rem 1.25rem; text-align:right">
+                <button class="btn" style="background-color:#ff0c00; color:#FFF" onclick="show_errors()" id="show_errors">
+                    <i class="mdi mdi-24px mdi-alert-octagon"></i>					
+                    <span style="display: inline;position: relative;top: -5px;">Show Errors</span>
+                </button>
+                <button class="btn" style="background-color: #0ead5c; color:#FFF; margin-right:1px;" onclick="hide_errors()" id="hide_errors">
+                    <i class="mdi mdi-24px mdi-check-all"></i>					
+                    <span style="display: inline;position: relative;top: -5px;">Hide Errors</span>
+                </button>
+                <button class="btn btn-default hide" onclick="show_data()" id="show_data">
+                    <i class="mdi mdi-24px mdi-table-large"></i>					
+                    <span style="display: inline;position: relative;top: -5px;">Show Data</span>
+                </button>
                 <button class="btn btn-primary" data-toggle="modal" data-target="#add_folder_modal">
                     <i class="mdi mdi-24px mdi-folder-plus"></i>					
                     <span style="display: inline;position: relative;top: -5px;">Delete File</span>
@@ -26,3 +38,7 @@
         </div>
     </div>
 </div>
+
+<script>
+    var wrong_list = {{wrong_rows_list}};
+</script>

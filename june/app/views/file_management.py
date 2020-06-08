@@ -20,6 +20,25 @@ import os, shutil
 import pandas as pd
 import numpy as np
 
+#
+#
+#
+#
+
+def validate_num_field(col_value):
+    if col_value!="":
+        if type(col_value) == float or type(col_value) == int:
+            return True
+        return False
+    else:
+        return True
+
+#
+#
+#
+def color_row(row):
+    return pd.Series('background-color: red', row.index)
+
 
 #======================================================================
 # Handle File
@@ -139,16 +158,52 @@ class FileView(View):
         fd = os.path.join(get_file_path(file_ins),file_ins.uploaded_file)
 
         df = pd.read_excel(fd, header=0)  
-
+        
         #
         # Fill NAN columns with 0
 
-        df.fillna("", inplace=True)
+        numeric_cols = ["SR_GL_CODE","GL_Code","Sales","HUH_Sales","RM",
+        "Resource_Cost","Revised_Resource_Cost","Qty_Discount","Export_Ben",
+        "Adv_License","Other_direct_material_ML","Other_direct_material_SS",
+        "Other_direct_material_Solvent_con","Other_direct_material_Packing",
+        "Indirect_material__cyl_abs_","PMD_COGS","Digital_Printer_Ink_Adj","Spec_adj",
+        "Cyl_recovery","Cylinder_Profit_Margin","Digital_Printer__Under__Over_Recovery",
+        "Printing__Under__Over_Recovery","Lamination__Under___Over_Recovery",
+        "HTMelt__Under___Over_Recovery","Slitting__Under___Over_Recovery",
+        "SS__Under___Over_Recovery","Packing__Under___Over_Recovery","Metalz__Under___Over_Recovery",
+        "Emboss__Under___Over_Recovery","Flexo__Under___Over_Recovery",
+        "Jbwrk_Tha__Under___Over_Recovery","Total__Under__Over_Recovery","Scrap_Sales",
+        "S_D","CHQ","Inc_Dec_of_Stock","HUH_Cylinder","Misc_Income","Processing_Chg",
+        "Inventory_Adjustments","Sales_Forex","RM_Forex","Compensation_Received",
+        "Rebates","VA_before_Other_Adjustments","Other_adjustments_for_VA","HUH_sales_with_Sales_Forex",
+        "IND_VA","EBIT_w_o_Under_Over","IND_EBIT","Huh_VA","Huh_EBIT_before_Grp_Cost",
+        "HUH_GP_before_Adj","Grp_Cost","Huh_EBIT_after_Grp_Cost",
+        "Revised_Ind_Sales_with_Rebate_Allocation","Revised_Ind_VA_with_Rebate_Allocation",
+        "Revised_Ind_EBIT_with_Rebate_Allocation","Revised_Huh_Sales_with_Rebate_Allocation",
+        "Revised_Huh_VA_with_Rebate_Allocation","Revised_Huh_GP_with_Rebate_Allocation",
+        "Revised_Huh_EBIT_before_grp_cost_with_Allocation",
+        "Revised_Huh_EBIT_after_grp_cost_with_Rebate_Allocation","CUSTOMER_NUMBER","CUSTOMER_TRX_ID",
+        "CUSTOMER_TRX_LINE_ID","CONVERSION_FACTOR","QUANTITY_INVOICED","UNIT_SELLING_PRICE",
+        "INV_AMT_FC","EXCHANGE_RATE","INV_AMT_INR","ORDERED_QUANTITY2","ACCTD_AMOUNT","GL_CODE",
+        "SALES_ORDER","SO_LINE_NO","PRODUCT_GSM","NO_OF_ONS","COIL_WIDTH","QTY_KM","SO_HEADER_ID",
+        "SO_LINE_ID","COGS_MATERIAL_COST","COGS_RESOURCE_COST","QTY_SQM","SO_CREA_EXCHANGE_RATE",
+        "MIS_COST_RMC","IP_RMA_QTY2","BUD_EXCHANGE_RATE","EXC_CHAP_NO","STD_NO","PMAC_RATE",
+        "EBIT_Percent","Contribution","Contribution_Percent","Sales_SQM","VA_SQM",
+        "EBIT_SQM","Revised_EBIT_wo_OU","Revised_EBIT_wo_OU_Percent","Net_Sales","VA_Percent",
+        "EBIT_Percent_Sales","HUH_Net_Sales","HUH_VA_percent","HUH_EBIT_percent","KSQM","YEAR"]
+
+        list_set = set()
+
+        for i in numeric_cols:
+            subtex = df.index[df[i].apply(validate_num_field) == False].to_list()   
+            list_set = list_set | set(subtex) 
+
+        self.data["wrong_rows_list"] = list(list_set)
+
         df.index = np.arange(1, len(df) + 1)
+        df= df.fillna("")
 
-        frame_contents = df.to_html()
-
-
-        self.data["data_html"] = frame_contents
+        self.data["data_html"] = df.to_html()
         return render(request, self.template_name, self.data)
+
 
