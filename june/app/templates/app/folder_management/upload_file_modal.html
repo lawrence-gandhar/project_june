@@ -10,8 +10,8 @@
 				</div>
 				<div class="modal-body">                
 					{% csrf_token %}
-					<input type="text" name="company_ids" value="{{company_ids}}">
-					<input type="text" name="parent_folder_ids" value="{{parent_folder_ids}}">
+					<input type="hidden" name="company_ids" value="{{company_ids}}">
+					<input type="hidden" name="parent_folder_ids" value="{{parent_folder_ids}}">
 					<div class="form-group row">
 						<label for="fname" class="col-sm-4 text-right control-label col-form-label">Folder Name</label>
 						<div class="col-sm-8">
