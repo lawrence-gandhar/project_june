@@ -18,6 +18,7 @@ from . import folder_management
 
 import os, shutil
 import pandas as pd
+import numpy as np
 
 
 #======================================================================
@@ -143,6 +144,7 @@ class FileView(View):
         # Fill NAN columns with 0
 
         df.fillna("", inplace=True)
+        df.index = np.arange(1, len(df) + 1)
 
         frame_contents = df.to_html()
 
