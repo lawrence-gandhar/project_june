@@ -1,17 +1,18 @@
 # project_june
-Freelancer Project In June 2020 for a firm. It is using Django and Pandas. Pandas is used to validate data in a Excel file, and then it is displayed in a html table. 
+Started as a freelance project in June 2020 for a firm. But I have extended it for further usage. <br>It is using **Django and Pandas**. Pandas is used to validate data in a file, and then the contents are displayed in a html table. 
 
-Few Operations:
-  Create, Rename and Delete folders. Create Folders inside a Folder
-  Upload Files to the folders created
-  Validate Excel file which has a set of defined columns.
-  Rename and Delete Files.
-  
-Upcoming Updates:
-  Dynamic setting of columns for validation
-  Support for CSV
-  Move files and folders
-  User Specific access on operations and events
-  Pagination for huge datasets
-  Dashboard for visualization
-  Visualization of Data
+# Few Operations:
+  > Create, Rename and Delete folders. Create Folders inside a Folder<br/>
+  > Upload Files to the folders created.<br/>
+  > Validate Excel file which has a set of defined columns.<br/>
+  > Rename, Replace and Delete Files.<br/>
+
+# Extensions:
+  > Dynamic setting of columns for validation.<br/>
+  > Assignment of folders to a specific file upload and movement.<br/>
+  > Support for CSV.<br/>
+  > Move files and folders.<br/>
+  > User Specific access on operations and events.<br/>
+  > Pagination for huge datasets.<br/>
+  > Dashboard for visualization.<br/>
+  > Visualization of Data.<br/>
