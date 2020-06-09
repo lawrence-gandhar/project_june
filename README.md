@@ -1,5 +1,5 @@
 # project_june
-Freelancer Project In June 2020 for a firm. It is using Django and Pandas. Pandas is used to validate data in a Excel file, and then display it in a htnl table. 
+Freelancer Project In June 2020 for a firm. It is using Django and Pandas. Pandas is used to validate data in a Excel file, and then it is displayed in a html table. 
 
 Few Operations:
   Create, Rename and Delete folders. Create Folders inside a Folder
@@ -12,5 +12,6 @@ Upcoming Updates:
   Support for CSV
   Move files and folders
   User Specific access on operations and events
-  
-  
+  Pagination for huge datasets
+  Dashboard for visualization
+  Visualization of Data
