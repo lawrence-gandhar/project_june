@@ -181,18 +181,21 @@ class ManageFolderView(View):
 def delete_folder(request, ins=None):
     if ins is not None:
         
-        folderlist = user_model.FolderList.objects.get(pk = int(ins))        
-        fd = folder_parents(folderlist.parent_folder.id, [], folderlist.company.folder_name)   
-        path = os.path.join(fd, folderlist.folder_name)
+        folderlist = user_model.FolderList.objects.get(pk = int(ins)) 
+
+        if folderlist.parent_folder is not None:        
+            fd = folder_parents(folderlist.parent_folder.id, [], folderlist.company.folder_name) 
+            path = os.path.join(fd, folderlist.folder_name)
+        else:
+            path = os.path.join(settings.COMPANY_FOLDER_PATH, folderlist.company.folder_name, folderlist.folder_name)
         
         folderlist.delete()
         
         try:
             shutil.rmtree(path)
-            
-            return HttpResponse(1)
         except:
-            return HttpResponse(0)
+            pass
+        return HttpResponse(1)
     return HttpResponse(0)
 
 
@@ -208,10 +211,11 @@ def rename_folder(request):
         ins = request.POST["ins"]
         
         folder = user_model.FolderList.objects.get(pk = int(ins))
-        fd = folder_parents(folder.parent_folder.id, [], folder.company.folder_name) 
         
-        if not fd:
-            return redirect("/unauthorized/", permanent=False)    
+        fd = os.path.join(settings.COMPANY_FOLDER_PATH, folder.company.folder_name)
+        
+        if parent_id !="":
+            fd = folder_parents(folder.parent_folder.id, [], folder.company.folder_name) 
         
         old_path = os.path.join(fd, folder.folder_name)
         

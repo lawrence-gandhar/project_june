@@ -20,6 +20,8 @@ import os, shutil
 import pandas as pd
 import numpy as np
 
+from datetime import datetime
+
 #======================================================================
 # Validation Check
 #======================================================================
@@ -49,10 +51,20 @@ def handle_uploaded_file(f, company, parent_folder):
         folder_path = folder_management.folder_parents(parent_folder.id, [], company_path)
     
     if folder_path is not None:
-        dest = os.path.join(folder_path,f.name);
+        dest = os.path.join(folder_path,f.name)
+        
+        filename = f.name
+        
+        if os.path.exists(dest):
+            curr = datetime.now().strftime("%Y%m%d-%H%M%S_")
+            dest = os.path.join(folder_path,curr+f.name)
+            filename = curr+f.name
+                        
         with open(dest, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
+        return filename
+
 
 #======================================================================
 # Get File Path
@@ -99,9 +111,11 @@ def upload_file(request):
          
         if form.is_valid():
             if company is not None:   
-                handle_uploaded_file(request.FILES['uploaded_file'], comp_ins, parent)  
+                filename = handle_uploaded_file(request.FILES['uploaded_file'], comp_ins, parent)  
                 
                 ins = form.save(commit = False) 
+    
+                ins.uploaded_file = filename
     
                 if parent is None:
                     ins.company_folder = True
@@ -116,9 +130,11 @@ def upload_file(request):
                 return redirect("/unauthorized/",permanent=False)
                 
         if parent_folder is None:  
-            return redirect('/manage_folder/'+str(company)+"/",permanent=False)
+            #return redirect('/manage_folder/'+str(company)+"/",permanent=False)
+            return redirect('/manage_file/'+str(ins.id)+"/",permanent=False)
         else:
-            return redirect('/manage_folder/'+str(company)+"/"+str(parent_folder)+"/", permanent=False)
+            #return redirect('/manage_folder/'+str(company)+"/"+str(parent_folder)+"/", permanent=False)
+            return redirect('/manage_file/'+str(parent_folder)+"/"+str(ins.id)+"/", permanent=False)
     return redirect("/unauthorized/",permanent=False)
 
 #======================================================================
@@ -144,6 +160,7 @@ class FileView(View):
     #
     #
     def get(self, request, ins=None):
+        self.data["errors"] = ""
         try:
             file_ins = user_model.UploadedFiles.objects.get(pk = int(ins))  
         except:
@@ -199,8 +216,9 @@ class FileView(View):
                 subtex = df.index[df[i].apply(validate_num_field) == False].to_list()   
             except:
                 self.data["errors"] = "Column Names Mismatch. Not a correct file"
+                self.data["data_html"] = ''
                 return render(request, self.template_name, self.data)
-
+            
             list_set = list_set | set(subtex) 
 
         self.data["wrong_rows_list"] = list(list_set)
@@ -224,8 +242,10 @@ def delete_file(request, ins = None):
             return redirect("/unauthorized/", permanent=False)
 
         fd = os.path.join(get_file_path(file_ins),file_ins.uploaded_file)
-        os.remove(fd)
-
+        try:
+            os.remove(fd)
+        except:
+            pass
         company = file_ins.company.id
         parent_folder = None
 
