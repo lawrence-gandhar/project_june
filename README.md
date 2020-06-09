@@ -7,7 +7,7 @@ Started as a freelance project in June 2020 for a firm. But I have extended it f
   > Validate Excel file which has a set of defined columns.<br/>
   > Rename, Replace and Delete Files.<br/>
 
-# Extensions:
+# Future Upgrades:
   > Dynamic setting of columns for validation.<br/>
   > Assignment of folders to a specific file upload and movement.<br/>
   > Support for CSV.<br/>
