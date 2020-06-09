@@ -25,9 +25,13 @@
                     <i class="mdi mdi-24px mdi-delete"></i>					
                     <span style="display: inline;position: relative;top: -5px;">Delete File</span>
                 </a>
-                <button class="btn btn-warning" data-toggle="modal" data-target="#upload_file_modal">
-                    <i class="mdi mdi-24px mdi-file-pdf"></i>					
+                <button class="btn btn-warning" data-toggle="modal" data-target="#rename_file_modal">
+                    <i class="mdi mdi-24px mdi-file-excel"></i>					
                     <span style="display: inline;position: relative;top: -5px;">Rename File</span>
+                </button>
+				<button class="btn btn-warning" data-toggle="modal" data-target="#rename_file_modal">
+                    <i class="mdi mdi-24px mdi-file-excel"></i>					
+                    <span style="display: inline;position: relative;top: -5px;">Replace File</span>
                 </button>
             </div>
             <div class="row">
@@ -46,6 +50,8 @@
         </div>
     </div>
 </div>
+
+{% include 'app/file_management/rename_file_modal.html' %}
 
 <script>
     var wrong_list = {{wrong_rows_list}};

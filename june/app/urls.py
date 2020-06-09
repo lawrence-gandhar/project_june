@@ -46,6 +46,7 @@ urlpatterns += [
     path('upload_file/', never_cache(login_required(file_management.upload_file)), name = 'upload_file'),
     path('manage_file/<int:ins>/', never_cache(login_required(file_management.FileView.as_view())), name = 'manage_file'),
     path('delete_file/<int:ins>/', never_cache(login_required(file_management.delete_file)), name = 'delete_file'),
+    path('rename_file/<int:ins>/', never_cache(login_required(file_management.rename_file)), name = 'rename_file'),
 
 ]    
 

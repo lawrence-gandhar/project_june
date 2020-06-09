@@ -129,12 +129,7 @@ def upload_file(request):
             else:
                 return redirect("/unauthorized/",permanent=False)
                 
-        if parent_folder is None:  
-            #return redirect('/manage_folder/'+str(company)+"/",permanent=False)
-            return redirect('/manage_file/'+str(ins.id)+"/",permanent=False)
-        else:
-            #return redirect('/manage_folder/'+str(company)+"/"+str(parent_folder)+"/", permanent=False)
-            return redirect('/manage_file/'+str(parent_folder)+"/"+str(ins.id)+"/", permanent=False)
+        return redirect('/manage_file/'+str(ins.id)+"/",permanent=False)
     return redirect("/unauthorized/",permanent=False)
 
 #======================================================================
@@ -160,6 +155,7 @@ class FileView(View):
     #
     #
     def get(self, request, ins=None):
+    
         self.data["errors"] = ""
         try:
             file_ins = user_model.UploadedFiles.objects.get(pk = int(ins))  
@@ -167,6 +163,8 @@ class FileView(View):
             return redirect("/unauthorized/", permanent=False)
 
         self.data["file_ins"] = file_ins.id
+        
+        self.data["rename_file_form"] = company_forms.RenameUploadFileForm(instance = file_ins)
 
         #
         # File Data Show & Validations
@@ -176,6 +174,7 @@ class FileView(View):
         try:
             df = pd.read_excel(fd, header=0)  
         except:
+            self.data["data_html"] = ''
             self.data["errors"] = "Unsupported format, or corrupt file"
             return render(request, self.template_name, self.data)
 
@@ -212,13 +211,17 @@ class FileView(View):
         list_set = set()
 
         for i in numeric_cols:
-            try:
-                subtex = df.index[df[i].apply(validate_num_field) == False].to_list()   
-            except:
+            
+            if i not in df:
                 self.data["errors"] = "Column Names Mismatch. Not a correct file"
                 self.data["data_html"] = ''
                 return render(request, self.template_name, self.data)
-            
+            else:
+                try:
+                    subtex = df.index[df[i].apply(validate_num_field) == False].to_list()   
+                except:
+                    pass
+                           
             list_set = list_set | set(subtex) 
 
         self.data["wrong_rows_list"] = list(list_set)
@@ -268,4 +271,40 @@ def delete_file(request, ins = None):
 #
 
 def rename_file(request, ins=None):
-    pass
+    if ins is not None:
+        try:
+            file_ins = user_model.UploadedFiles.objects.get(pk = int(ins))
+        except:
+            return redirect("/unauthorized/", permanent=False)
+        
+        fd = get_file_path(file_ins)
+        old_path = os.path.join(fd, file_ins.uploaded_file)
+        
+        form = company_forms.RenameUploadFileForm(request.POST, instance = file_ins)
+
+        if form.is_valid():
+    
+            fins = form.save(commit=False)
+    
+            filename = request.POST["uploaded_file"]
+    
+            new_path = os.path.join(fd, request.POST["uploaded_file"])
+            
+            if request.POST["uploaded_file"] != file_ins.uploaded_file:
+                if os.path.exists(new_path):
+                    curr = datetime.now().strftime("%Y%m%d-%H%M%S_")
+                    new_path = os.path.join(fd,curr+request.POST["uploaded_file"])
+                    filename = curr+request.POST["uploaded_file"]
+        
+                os.rename(old_path, new_path)
+                fins.uploaded_file = filename
+                fins.save()
+                
+        if file_ins.folder_path is not None:
+            return redirect("/manage_folder/"+str(file_ins.company.id)+"/"+str(file_ins.folder_path.id)+"/", permanent=False)
+        else:
+            return redirect("/manage_folder/"+str(file_ins.company.id)+"/", permanent=False)
+    return redirect("/unauthorized/", permanent=False)
+        
+        
+        

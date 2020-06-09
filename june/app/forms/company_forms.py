@@ -45,4 +45,17 @@ class UploadFileForm(ModelForm):
         
         widgets = {
             'uploaded_file' : FileInput(attrs = {'class':'form-control', 'onchange':'checkfile(this)', 'required':'true'}),
-        }        
+        }  
+
+#
+#
+#
+class RenameUploadFileForm(ModelForm):
+    class Meta:
+        model = user_model.UploadedFiles
+        fields = ('uploaded_file',)
+        
+        widgets = {
+            'uploaded_file' : TextInput(attrs = {'class':'form-control', 'required':'true'}),
+        }  
+        
