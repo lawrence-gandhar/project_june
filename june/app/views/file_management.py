@@ -137,6 +137,8 @@ class FileView(View):
     data["js_files"] = ['custom_files/js/file_management.js']
 
     data["page_title"] = "Manage File"
+    data["errors"] = ""
+
 
     #
     #
@@ -154,8 +156,12 @@ class FileView(View):
         #
         fd = os.path.join(get_file_path(file_ins),file_ins.uploaded_file)
 
-        df = pd.read_excel(fd, header=0)  
-        
+        try:
+            df = pd.read_excel(fd, header=0)  
+        except:
+            self.data["errors"] = "Unsupported format, or corrupt file"
+            return render(request, self.template_name, self.data)
+
         numeric_cols = ["SR_GL_CODE","GL_Code","Sales","HUH_Sales","RM",
         "Resource_Cost","Revised_Resource_Cost","Qty_Discount","Export_Ben",
         "Adv_License","Other_direct_material_ML","Other_direct_material_SS",
@@ -189,7 +195,12 @@ class FileView(View):
         list_set = set()
 
         for i in numeric_cols:
-            subtex = df.index[df[i].apply(validate_num_field) == False].to_list()   
+            try:
+                subtex = df.index[df[i].apply(validate_num_field) == False].to_list()   
+            except:
+                self.data["errors"] = "Column Names Mismatch. Not a correct file"
+                return render(request, self.template_name, self.data)
+
             list_set = list_set | set(subtex) 
 
         self.data["wrong_rows_list"] = list(list_set)

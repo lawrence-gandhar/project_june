@@ -22,7 +22,7 @@
                     <span style="display: inline;position: relative;top: -5px;">Show Data</span>
                 </button>
                 <a class="btn btn-primary" href="{% url 'delete_file' file_ins %}">
-                    <i class="mdi mdi-24px mdi-folder-plus"></i>					
+                    <i class="mdi mdi-24px mdi-delete"></i>					
                     <span style="display: inline;position: relative;top: -5px;">Delete File</span>
                 </a>
                 <button class="btn btn-warning" data-toggle="modal" data-target="#upload_file_modal">
@@ -31,6 +31,14 @@
                 </button>
             </div>
             <div class="row">
+
+                {% if errors %}
+                    <div class="col-12" style="padding:10px;">
+                        <div class="alert alert-danger" role="alert">
+                            {{errors}}
+                        </div>
+                    </div>
+                {% endif %}
                 <div class="col-12">
                     {{data_html|safe}}
                 </div>
