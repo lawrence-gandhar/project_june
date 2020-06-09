@@ -20,9 +20,9 @@ import os, shutil
 import pandas as pd
 import numpy as np
 
-#
-#
-#
+#======================================================================
+# Validation Check
+#======================================================================
 #
 
 def validate_num_field(col_value):
@@ -33,18 +33,10 @@ def validate_num_field(col_value):
     else:
         return True
 
-#
-#
-#
-def color_row(row):
-    return pd.Series('background-color: red', row.index)
-
-
 #======================================================================
 # Handle File
 #======================================================================
 #
-
 
 def handle_uploaded_file(f, company, parent_folder):
 
@@ -129,9 +121,9 @@ def upload_file(request):
             return redirect('/manage_folder/'+str(company)+"/"+str(parent_folder)+"/", permanent=False)
     return redirect("/unauthorized/",permanent=False)
 
-#
-#
-#
+#======================================================================
+# File Contents View And Validation
+#======================================================================
 #
 class FileView(View):
 
@@ -155,13 +147,15 @@ class FileView(View):
         except:
             return redirect("/unauthorized/", permanent=False)
 
+        self.data["file_ins"] = file_ins.id
+
+        #
+        # File Data Show & Validations
+        #
         fd = os.path.join(get_file_path(file_ins),file_ins.uploaded_file)
 
         df = pd.read_excel(fd, header=0)  
         
-        #
-        # Fill NAN columns with 0
-
         numeric_cols = ["SR_GL_CODE","GL_Code","Sales","HUH_Sales","RM",
         "Resource_Cost","Revised_Resource_Cost","Qty_Discount","Export_Ben",
         "Adv_License","Other_direct_material_ML","Other_direct_material_SS",
@@ -206,4 +200,41 @@ class FileView(View):
         self.data["data_html"] = df.to_html()
         return render(request, self.template_name, self.data)
 
+#======================================================================
+# Delete File
+#======================================================================
+#
 
+def delete_file(request, ins = None):
+    if ins is not None:
+        try:
+            file_ins = user_model.UploadedFiles.objects.get(pk = int(ins))
+        except:
+            return redirect("/unauthorized/", permanent=False)
+
+        fd = os.path.join(get_file_path(file_ins),file_ins.uploaded_file)
+        os.remove(fd)
+
+        company = file_ins.company.id
+        parent_folder = None
+
+        if not file_ins.company_folder:
+            parent_folder = file_ins.folder_path.id
+
+        file_ins.delete()
+
+        if parent_folder is not None:
+            return redirect("/manage_folder/"+str(company)+"/"+str(parent_folder)+"/", permanent=False)
+        else:
+            return redirect("/manage_folder/"+str(company)+"/", permanent=False)
+
+    return redirect("/unauthorized/", permanent=False)
+
+
+#======================================================================
+# Rename File
+#======================================================================
+#
+
+def rename_file(request, ins=None):
+    pass

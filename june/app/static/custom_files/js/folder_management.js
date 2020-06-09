@@ -22,3 +22,21 @@ function delete_folder(ids){
 		else alert("Unknown Error Code");
 	});
 }
+
+
+/************************************************************/
+// CHECK FILE EXTENSION
+/************************************************************/
+
+function checkfile(sender) {
+  var validExts = new Array(".xlsx", ".xls");
+  var fileExt = sender.value;
+  fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+  if (validExts.indexOf(fileExt) < 0) {
+    alert("Invalid file selected, valid files are of " +
+             validExts.toString() + " types.");
+    $(sender).val("");
+    return false;
+  }
+  else return true;
+}

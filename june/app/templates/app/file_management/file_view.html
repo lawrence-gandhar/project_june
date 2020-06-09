@@ -21,10 +21,10 @@
                     <i class="mdi mdi-24px mdi-table-large"></i>					
                     <span style="display: inline;position: relative;top: -5px;">Show Data</span>
                 </button>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#add_folder_modal">
+                <a class="btn btn-primary" href="{% url 'delete_file' file_ins %}">
                     <i class="mdi mdi-24px mdi-folder-plus"></i>					
                     <span style="display: inline;position: relative;top: -5px;">Delete File</span>
-                </button>
+                </a>
                 <button class="btn btn-warning" data-toggle="modal" data-target="#upload_file_modal">
                     <i class="mdi mdi-24px mdi-file-pdf"></i>					
                     <span style="display: inline;position: relative;top: -5px;">Rename File</span>

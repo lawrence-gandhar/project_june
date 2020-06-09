@@ -45,20 +45,10 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="index.html">
-                        <!-- Logo icon -->
-                        <b class="logo-icon p-l-10">
-                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                            <!-- Dark Logo icon -->
-                            <img src="../../assets/images/logo-icon.png" alt="homepage" class="light-logo" />
-                           
-                        </b>
-                        <!--End Logo icon -->
-                         <!-- Logo text -->
-                        <span class="logo-text">
+                    <a class="navbar-brand" href="index.html"  style="background-color:#FFF; text-align:center">                        
+                        <span class="logo-text text-center">
                              <!-- dark Logo text -->
-                             <img src="../../assets/images/logo-text.png" alt="homepage" class="light-logo" />
-                            
+                             <img src="{% static 'images/numpy-pandas.jpeg' %}" style="width:92px;" alt="homepage" class="light-logo" />
                         </span>
                         <!-- Logo icon -->
                         <!-- <b class="logo-icon"> -->
@@ -249,30 +239,10 @@
 								</li>
                             </ul>
                         </li>
-						<li class="sidebar-item"> 
-							<a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-								<i class="mdi mdi-face"></i>
-								<span class="hide-menu">Company Management</span>
-							</a>
-                            <ul aria-expanded="false" class="collapse  first-level">
-                                <li class="sidebar-item">
-									<a href="{% url 'manage_company' %}" class="sidebar-link">
-										<i class="mdi mdi-emoticon"></i>
-										<span class="hide-menu"> Manage Company </span>
-									</a>
-								</li>
-                                <li class="sidebar-item">
-									<a href="icon-fontawesome.html" class="sidebar-link">
-										<i class="mdi mdi-emoticon-cool"></i>
-										<span class="hide-menu"> Add Company </span>
-									</a>
-								</li>
-                            </ul>
-                        </li>
-						<li class="sidebar-item"> 
-							<a class="sidebar-link waves-effect waves-dark sidebar-link" href="index.html" aria-expanded="false">
+                        <li class="sidebar-item"> 
+							<a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'manage_company' %}" aria-expanded="false">
 								<i class="mdi mdi-view-dashboard"></i>
-								<span class="hide-menu">File Management</span>
+								<span class="hide-menu">Company Management</span>
 							</a>
 						</li>
                     </ul>

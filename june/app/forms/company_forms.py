@@ -44,5 +44,5 @@ class UploadFileForm(ModelForm):
         fields = ('uploaded_file',)
         
         widgets = {
-            'uploaded_file' : FileInput(attrs = {'class':'form-control'}),
+            'uploaded_file' : FileInput(attrs = {'class':'form-control', 'onchange':'checkfile(this)', 'required':'true'}),
         }        
