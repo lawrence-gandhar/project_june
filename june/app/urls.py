@@ -16,7 +16,7 @@ urlpatterns = [
 
 # User Management
 urlpatterns += [
-    path('dashboard/', never_cache(login_required(user_management.DashboardView.as_view())), name = 'dashboard'),
+    path('dashboard/', never_cache(login_required(dashboard.DashboardView.as_view())), name = 'dashboard'),
     path('add_user/', never_cache(login_required(user_management.AddUserView.as_view())), name = 'add_user'),
     path('edit_user/<int:ins>/', never_cache(login_required(user_management.EditUserView.as_view())), name = 'edit_user'),
     path('manage_user/', never_cache(login_required(user_management.ManageUserView.as_view())), name = 'manage_user'),

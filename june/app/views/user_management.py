@@ -16,29 +16,6 @@ from app.forms import *
 
 
 #======================================================================
-# Dashboard View
-#======================================================================
-#
-
-class DashboardView(View):
-    template_name = 'app/base/base.html'
-
-    data = defaultdict()
-
-    data["included_template"] = 'app/dashboard/dashboard.html'
-
-    data["css_files"] = []
-    data["js_files"] = []
-
-    data["page_title"] = "Dashboard"
-    
-    #
-    #
-    def get(self, request):
-        return render(request, self.template_name, self.data)
-    
-
-#======================================================================
 # AddUser View
 #======================================================================
 #
