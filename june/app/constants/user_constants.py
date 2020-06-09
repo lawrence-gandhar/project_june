@@ -1,3 +1,7 @@
+#
+# AUTHOR : LAWRENCE GANDHAR
+# 
+
 USERTYPE = (
     (0, "Super Admin"),
     (1, "Administrator"),
