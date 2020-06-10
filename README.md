@@ -1,5 +1,5 @@
 # project_june
-Started as a freelance project in June 2020 for a firm. But I have extended it for further usage. <br>It is using **Django and Pandas**. Pandas is used to validate data in a file, and then the contents are displayed in a html table. 
+Started as a freelance project in June 2020 for a firm. But I have extended it for further usage. I have seen people struggling for hours to validate data in huge data sets. Datatype errors, missing values, etc. This is just a small help that I can do.<br>It is using **Django and Pandas**. Pandas is used to validate data in a file, and then the contents are displayed in a html table. 
 
 # Few Operations:
   > Create, Rename and Delete folders. Create Folders inside a Folder<br/>
