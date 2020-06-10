@@ -12,7 +12,11 @@ Started as a freelance project in June 2020 for a firm. But I have extended it f
   > Assignment of folders to a specific file upload and movement.<br/>
   > Support for CSV.<br/>
   > Move files and folders.<br/>
+  > Auto Data Corrections.<br/>
+  > Download files and folders in zip format.<br/>
   > User Specific access on operations and events.<br/>
-  > Pagination for huge datasets.<br/>
+  > Pagination, Breaking and combining huge datasets.<br/>
   > Dashboard for visualization.<br/>
   > Visualization of Data.<br/>
+  
+**I appreciate your kind support with creative thinking, ideas and code contribution. Thank You...**  
