@@ -134,6 +134,14 @@ class Company(models.Model):
  
 class FolderList(models.Model):
 
+    user = models.ForeignKey(
+        User,
+        db_index = True,
+        null = True,
+        blank = True,
+        on_delete = models.SET_NULL,
+    )
+
     company = models.ForeignKey(
         Company,
         db_index = True,
@@ -156,6 +164,7 @@ class FolderList(models.Model):
         blank = False,
         null = True,
     )
+    
     
     added_on = models.DateTimeField(
         auto_now_add = True,
@@ -223,6 +232,87 @@ class UploadedFiles(models.Model):
     class Meta:
         verbose_name_plural = "Uploaded_Files_Table"
  
+
+#==========================================================================
+# FOLDER PERMISSION MODELS
+#==========================================================================
+#
+ 
+class FolderFilePermissions(models.Model):
+
+    set_for_all = models.BooleanField(
+        db_index = True,
+        null = False,
+        default = user_constants.IS_TRUE,
+    )
+    
+    user = models.ForeignKey(
+        User,
+        db_index = True,
+        null = True,
+        blank = True,
+        on_delete = models.CASCADE,
+    )
+    
+    is_folder = models.BooleanField(
+        default = True,
+        db_index = True,
+    )
+    
+    folder = models.ForeignKey(
+        FolderList,
+        db_index = True,
+        null = True,
+        blank = True,
+        on_delete = models.CASCADE,
+    )
+    
+    uploaded_file = models.ForeignKey(
+        UploadedFiles,
+        db_index = True,
+        null = True,
+        blank = True,
+        on_delete = models.CASCADE,
+    )
+    
+    perms_grant_all = models.BooleanField(
+        db_index = True,
+        null = False,
+        default = user_constants.IS_TRUE,
+    )
+    
+    perms_create = models.BooleanField(
+        db_index = True,
+        null = False,
+        default = user_constants.IS_FALSE,
+    )
+    
+    perms_rename = models.BooleanField(
+        db_index = True,
+        null = False,
+        default = user_constants.IS_FALSE,
+    )
+    
+    perms_replace = models.BooleanField(
+        db_index = True,
+        null = False,
+        default = user_constants.IS_FALSE,
+    )
+    
+    perms_move = models.BooleanField(
+        db_index = True,
+        null = False,
+        default = user_constants.IS_FALSE,
+    )
+    
+    perms_delete = models.BooleanField(
+        db_index = True,
+        null = False,
+        default = user_constants.IS_FALSE,
+    )
+    
+
+
 
 #==================================================================
 # Create instances on User Creation

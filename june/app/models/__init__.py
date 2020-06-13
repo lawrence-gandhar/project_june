@@ -1,2 +1,2 @@
 from . import user_model
-from . import file_model
+from . import configuration_model
