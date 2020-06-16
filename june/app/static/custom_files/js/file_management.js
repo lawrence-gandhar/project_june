@@ -1,11 +1,23 @@
 $(document).ready(function(){
 
-    $("table.dataframe").addClass("table table-responsive");
-    $("table.dataframe th").attr("style",'background: #9be327; color:#000000; font-weight:bold;');
+	var row_list = Object.keys(wrong_list);	
 
-    for(i=0;i<wrong_list.length;i++){
-        $(".dataframe tr:eq("+(parseInt(wrong_list[i])+1)+")").css({"background-color":"rgba(255, 0, 0, 0.59)", "color":"#FFFFFF"});
-    }
+    $("table.dataframe").addClass("table table-responsive");
+	$("table.dataframe").css("font-size","11px");
+    $("table.dataframe th").attr("style",'background: #000000; opacity:0.7; color:#FFFFFF; padding:10px; font-weight:bold;');
+
+    for(i=0;i<row_list.length;i++){
+        $(".dataframe tr:eq("+(parseInt(row_list[i])+1)+")").css({"background-color":"rgba(255, 0, 0, 0.2)", "color":"#000000"});
+		
+		row_index = parseInt(row_list[i])+1;
+		
+		for( x=0; x < wrong_list[parseInt(row_list[i])].length; x++){
+			
+			col_index = parseInt(wrong_list[parseInt(row_list[i])][x])
+			
+			$('.dataframe tr:eq('+(row_index)+') td:eq('+col_index+')').css({"background-color":"rgba(255, 0, 0)", "color":"#000000"});
+		}	
+	}
 });
 
 function show_errors(){

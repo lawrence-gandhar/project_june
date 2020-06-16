@@ -72,7 +72,7 @@ class ManageFolderView(View):
     data["js_files"] = ['custom_files/js/folder_management.js']
 
     data["page_title"] = "Manage Folder"
-        
+    
     #
     #
     def get(self, request, company=None, parent_folder=None):
@@ -91,9 +91,18 @@ class ManageFolderView(View):
         #
         folderlist = user_model.FolderList.objects.filter(company = comp)
         if parent_folder is not None:
-            folderlist = folderlist.filter(parent_folder_id = int(parent_folder))
+            folderlist = folderlist.filter(parent_folder_id = int(parent_folder))        
+
+            try:
+                parent = user_model.FolderList.objects.get(pk = int(parent_folder))
+            except:
+                return redirect("/unauthorized/", permanent=False)
+        
+            self.data["folder_path"] = folder_parents(parent_folder, [], comp.folder_name)   
+
         else:
             folderlist = folderlist.filter(parent_folder__isnull = True)
+            self.data["folder_path"] = os.path.join(settings.COMPANY_FOLDER_PATH, comp.folder_name)
          
         self.data["folder_list"] = folderlist
         

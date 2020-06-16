@@ -1,0 +1,51 @@
+<style>
+
+.table td{
+padding: 0.5rem 0.5rem 0.1rem 0.5rem;
+line-height: initial;
+}
+
+
+</style>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="card">
+			<table class="table table-bordered">				
+				<thead>
+					<tr>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Company Name</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Description</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Is Active</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Folder</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Added By</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold;" scope="col" class="text-center">Added On</th>
+						<th style="background: #27e39d; opacity: 0.7; color:#000000; font-weight:bold; width:180px" scope="col" class="text-center">Actions</th>
+					</tr>
+				</thead>
+				<tbody style="font-size:11px">
+					{% for row in company_list %}
+						<tr>
+							<td>{{row.company_name|upper}}</td>
+							<td>{{row.description|default_if_none:"-"}}</td>
+							<td class="text-center">{{row.is_active}}</td>
+							<td {% if row.folder_name is None %} class="text-center" {% endif %}>
+								{{row.folder_name|default_if_none:"-"}}
+							</td>
+							<td>{{row.user}}</td>
+							<td>{{row.added_on}}</td>
+							<td class="text-center">
+								{% if row.folder_name is not None %}
+									<a href="{% url 'manage_folder' row.id %}">
+										<i title="Manage Folders" style="cursor:pointer; margin-right:10px;" class="mdi mdi-18px mdi-folder text-warning"></i>
+									</a>
+								{% endif %}								
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

@@ -7,12 +7,21 @@
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="card">			
+		<div class="card">
+			<div class="card-title" style="background:#eee">
+				<h6 style="padding:10px;">Folder Path : {{folder_path}}</h6>
+			</div>
 			<div class="card-body" style="padding:0.7rem 1.25rem; text-align:right">
+				<button onclick="window.history.back();" class="btn btn-default">
+					<i class="mdi mdi-24px mdi-arrow-left-bold"></i>					
+					<span style="display: inline;position: relative;top: -5px;"> Back</span>
+				</button>
+				{% ifnotequal user.profile.usertype 2 %}
 				<button class="btn btn-primary" data-toggle="modal" data-target="#add_folder_modal">
 					<i class="mdi mdi-24px mdi-folder-plus"></i>					
 					<span style="display: inline;position: relative;top: -5px;"> New Folder</span>
 				</button>
+				{% endifnotequal %}
 				<button class="btn btn-success" data-toggle="modal" data-target="#upload_file_modal">
 					<i class="mdi mdi-24px mdi-file-pdf"></i>					
 					<span style="display: inline;position: relative;top: -5px;"> Add File</span>
@@ -24,6 +33,9 @@
 						{% for folder in folder_list %}
 							<li class="col-md-3 col-lg-2 col-xlg-2" style="float:left; list-style-type:none; cursor:pointer">
 								<div class="folder-item card">
+									
+									{% ifnotequal user.profile.usertype 2 %}
+									
 									<div>
 										<span class="settings_icon" style="position: absolute;position: absolute;right: 15px;top: 5px; color:#000000;" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 											<i class="mdi mdi-settings mdi-18px" style="margin-top:10px;"></i>
@@ -37,6 +49,9 @@
 											</a>
 										</div>
 									</div>
+									
+									{% endifnotequal %}
+									
 									<a href="/manage_folder/{{folder.company.id}}/{{folder.id}}/">
 										<div class="box text-center">
 											<h1 class="font-light text-warning"><i class="mdi mdi-folder"></i></h1>
@@ -71,11 +86,13 @@
     </div>
 </div>
 
-{% include 'app/folder_management/upload_file_modal.html' %}
+{% ifnotequal user.profile.usertype 2 %}
 
-{% include 'app/folder_management/add_folder_modal.html' %}
+	{% include 'app/folder_management/upload_file_modal.html' %}
 
-{% for i in rename_folder_form %}
-	{% include 'app/folder_management/rename_folder_modal.html' %}
-{% endfor %}
+	{% include 'app/folder_management/add_folder_modal.html' %}
 
+	{% for i in rename_folder_form %}
+		{% include 'app/folder_management/rename_folder_modal.html' %}
+	{% endfor %}
+{% endifnotequal %}

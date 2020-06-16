@@ -208,7 +208,7 @@ class FileView(View):
         "EBIT_SQM","Revised_EBIT_wo_OU","Revised_EBIT_wo_OU_Percent","Net_Sales","VA_Percent",
         "EBIT_Percent_Sales","HUH_Net_Sales","HUH_VA_percent","HUH_EBIT_percent","KSQM","YEAR"]
 
-        list_set = set()
+        list_set = defaultdict()
 
         for i in numeric_cols:
             
@@ -218,13 +218,19 @@ class FileView(View):
                 return render(request, self.template_name, self.data)
             else:
                 try:
-                    subtex = df.index[df[i].apply(validate_num_field) == False].to_list()   
+                    subtex = df.index[df[i].apply(validate_num_field) == False].to_list()  
+                    
+                    if len(subtex) > 0:
+                        for x in subtex:
+                            if x in list_set.keys():
+                                list_set[x].append(df.columns.get_loc(i))
+                            else:
+                                list_set[x] = []
+                                list_set[x].append(df.columns.get_loc(i))
                 except:
                     pass
-                           
-            list_set = list_set | set(subtex) 
-
-        self.data["wrong_rows_list"] = list(list_set)
+        
+        self.data["wrong_rows_list"] = dict(list_set)
 
         df.index = np.arange(1, len(df) + 1)
         df= df.fillna("")
