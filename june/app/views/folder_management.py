@@ -2,11 +2,9 @@
 # AUTHOR : LAWRENCE GANDHAR
 # 
 from django.views import View
-from django.shortcuts import render
-from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 
 from collections import defaultdict
 
@@ -14,6 +12,7 @@ from django.conf import settings
 
 from app.models import *
 from app.forms import *
+from app.helpers import *
 
 import os, shutil
 
@@ -73,21 +72,41 @@ class ManageFolderView(View):
 
     data["page_title"] = "Manage Folder"
     
-    #
+    #---------------------------------------------------------------------------------
+    # GET REQUEST
+    #---------------------------------------------------------------------------------
     #
     def get(self, request, company=None, parent_folder=None):
+
+        self.data["company_ids"] = company        
+        self.data["parent_folder_ids"] = parent_folder if parent_folder is not None else ""
+
+        #---------------------------------------------------------------------------------
+        # FETCH COMPANY INSTANCE
+        #--------------------------------------------------------------------------------- 
+        #
         try:
             comp = user_model.Company.objects.get(pk = int(company))
         except:
             return redirect("/unauthorized/", permanent=False)
         
-        self.data["company_ids"] = company
+        #---------------------------------------------------------------------------------
+        # Permissions
+        #--------------------------------------------------------------------------------- 
+        #
+        self.data["full_permission"] = permissions_helper.user_full_access(user_id = request.user.id, is_folder = True, ins_id = parent_folder)
         
-        self.data["parent_folder_ids"] = parent_folder if parent_folder is not None else ""
-        
+
+        #---------------------------------------------------------------------------------
+        # FILE UPLOADING FORM & FOLDER CREATION FORM
+        #---------------------------------------------------------------------------------
+        #
+        self.data["upload_file_form"] = company_forms.UploadFileForm()
         self.data["add_folder_form"] = company_forms.FolderForm() 
 
-        #
+        #---------------------------------------------------------------------------------
+        # Get the list of folders in the current folder
+        #---------------------------------------------------------------------------------
         #
         folderlist = user_model.FolderList.objects.filter(company = comp)
         if parent_folder is not None:
@@ -106,7 +125,9 @@ class ManageFolderView(View):
          
         self.data["folder_list"] = folderlist
         
-        #
+        #---------------------------------------------------------------------------------
+        # get the list of files in the current folder
+        #---------------------------------------------------------------------------------
         #
         filelist = user_model.UploadedFiles.objects.filter(company = comp)
         if parent_folder is not None:
@@ -116,8 +137,10 @@ class ManageFolderView(View):
          
         self.data["filelist"] = filelist
         
-        #
-        #
+        #---------------------------------------------------------------------------------
+        # Create Rename Folder Forms
+        #--------------------------------------------------------------------------------- 
+        #  
         self.data["rename_folder_form"] = []
         i = 0
         for folder in folderlist:
@@ -130,14 +153,12 @@ class ManageFolderView(View):
             self.data["rename_folder_form"].append(xx)
             
             i +=1
-         
-        #
-        # 
-        self.data["upload_file_form"] = company_forms.UploadFileForm()
-         
+
         return render(request, self.template_name, self.data)
 
-    #
+    #---------------------------------------------------------------------------------
+    # POST REQUEST
+    #---------------------------------------------------------------------------------
     #
     def post(self, request, company=None, parent_folder=None):
     

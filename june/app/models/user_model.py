@@ -32,7 +32,7 @@ class Profile(models.Model):
     
     usertype = models.IntegerField(
         choices = user_constants.USERTYPE,
-        default = 2,
+        default = user_constants.IS_USER,
         db_index = True,
         null = False,
     )
