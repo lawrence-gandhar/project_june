@@ -53,15 +53,7 @@ class UploadConfig(models.Model):
 #
 
 class FileConfig(models.Model):
-    
-    upload_config = models.ForeignKey(
-        UploadConfig,
-        db_index = True,
-        null = True,
-        blank = False,
-        on_delete = models.SET_NULL,
-    )
-    
+        
     config_name = models.CharField(
         max_length = 100,
         blank = False,
