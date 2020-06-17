@@ -310,6 +310,12 @@ class FolderFilePermissions(models.Model):
         null = False,
         default = user_constants.IS_FALSE,
     )
+
+    perms_upload = models.BooleanField(
+        db_index = True,
+        null = False,
+        default = user_constants.IS_FALSE,
+    )
     
 
 
