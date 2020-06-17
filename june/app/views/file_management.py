@@ -172,7 +172,7 @@ class FileView(View):
         fd = os.path.join(get_file_path(file_ins),file_ins.uploaded_file)
 
         try:
-            df = pd.read_excel(fd, header=0)  
+            df = pd.read_excel(fd, header=0, chunksive=1)  
         except:
             self.data["data_html"] = ''
             self.data["errors"] = "Unsupported format, or corrupt file"
