@@ -215,6 +215,27 @@ def change_company_status(request, ins = None, status = 1):
     return redirect("/unauthorized/", permanent=False)  
 
 
+#======================================================================
+# Manage Company View
+#======================================================================
+#
+
+def EmpCompanyView(request):
+    template_name = 'app/base/base.html'
+
+    data = defaultdict()
+
+    data["included_template"] = 'app/company_management/employee_company_view.html'
+
+    data["css_files"] = []
+    data["js_files"] = []
+
+    data["page_title"] = "View Company"
+    
+    data["company_list"] = user_model.Company.objects.all().order_by("-id")  
+        
+    return render(request, template_name, data)
+
     
     
     
