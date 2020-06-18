@@ -12,6 +12,7 @@ from django.conf import settings
 
 from app.models import *
 from app.forms import *
+from app.helpers import *
 
 import os, shutil
 
@@ -20,7 +21,6 @@ import os, shutil
 # Manage Company View
 #======================================================================
 #
-
 class ManageCompanyView(View):
     template_name = 'app/base/base.html'
 
@@ -38,6 +38,7 @@ class ManageCompanyView(View):
     
     #
     #
+    
     def get(self, request):
         
         self.data["company_list"] = user_model.Company.objects.all().order_by("-id")  

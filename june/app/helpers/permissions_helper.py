@@ -5,8 +5,30 @@ from django.contrib.auth.models import User
 from app.models import *
 from app.constants import *
 
+import functools
+
 #======================================================================
-# FULL PERMISSION ON A FOLDER/FILE
+# DECORATOR - TO ALLOW ACCESS ONLY TO ADMINs
+#======================================================================
+#
+
+def check_url_access(function):
+
+    @functools.wraps(function)
+    def inner(request, *args, **kwargs):
+        
+        profile = user_model.Profile.objects.get(user = request.user)
+
+        if not request.user.is_superuser:
+            if profile.usertype == user_constants.IS_USER:
+                return redirect("/unautorized/", permanent=False)
+        return function(request, *args, **kwargs)
+    return inner
+
+
+
+#======================================================================
+# GET ACCESS RIGHTS OF FOLDER/FILE
 #======================================================================
 #
 

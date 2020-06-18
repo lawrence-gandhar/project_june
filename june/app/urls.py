@@ -5,6 +5,8 @@ from django.contrib.auth import views as auth_views
 from django.views.generic.base import RedirectView
 
 from app.views import *
+from app.helpers.permissions_helper import check_url_access
+
 
 # Authorization
 urlpatterns = [
@@ -17,20 +19,20 @@ urlpatterns = [
 # User Management
 urlpatterns += [
     path('dashboard/', never_cache(login_required(dashboard.DashboardView.as_view())), name = 'dashboard'),
-    path('add_user/', never_cache(login_required(user_management.AddUserView.as_view())), name = 'add_user'),
-    path('edit_user/<int:ins>/', never_cache(login_required(user_management.EditUserView.as_view())), name = 'edit_user'),
-    path('manage_user/', never_cache(login_required(user_management.ManageUserView.as_view())), name = 'manage_user'),
-    path('delete_user/<int:ins>/', never_cache(login_required(user_management.delete_user)), name = 'delete_user'),
+    path('add_user/', check_url_access(never_cache(login_required(user_management.AddUserView.as_view()))), name = 'add_user'),
+    path('edit_user/<int:ins>/', check_url_access(never_cache(login_required(user_management.EditUserView.as_view()))), name = 'edit_user'),
+    path('manage_user/', check_url_access(never_cache(login_required(user_management.ManageUserView.as_view()))), name = 'manage_user'),
+    path('delete_user/<int:ins>/', check_url_access(never_cache(login_required(user_management.delete_user))), name = 'delete_user'),
 ]
 
 # Company Management
 urlpatterns += [
-    path('manage_company/', never_cache(login_required(company_management.ManageCompanyView.as_view())), name = 'manage_company'),
-    path('add_company/', never_cache(login_required(company_management.add_company)), name = 'add_company'),
-    path('edit_company/', never_cache(login_required(company_management.edit_company)), name = 'edit_company'),
-    path('delete_company/<int:ins>/', never_cache(login_required(company_management.delete_company)), name = 'delete_company'),
-    path('delete_company_folder/<int:ins>/', never_cache(login_required(company_management.delete_company_folder)), name = 'delete_company_folder'),
-    path('change_company_status/<int:ins>/<int:status>', never_cache(login_required(company_management.change_company_status)), name = 'change_company_status'),
+    path('manage_company/', check_url_access(never_cache(login_required(company_management.ManageCompanyView.as_view()))), name = 'manage_company'),
+    path('add_company/', check_url_access(never_cache(login_required(company_management.add_company))), name = 'add_company'),
+    path('edit_company/', check_url_access(never_cache(login_required(company_management.edit_company))), name = 'edit_company'),
+    path('delete_company/<int:ins>/', check_url_access(never_cache(login_required(company_management.delete_company))), name = 'delete_company'),
+    path('delete_company_folder/<int:ins>/', check_url_access(never_cache(login_required(company_management.delete_company_folder))), name = 'delete_company_folder'),
+    path('change_company_status/<int:ins>/<int:status>', check_url_access(never_cache(login_required(company_management.change_company_status))), name = 'change_company_status'),
 ] 
 
 # Folder Management
