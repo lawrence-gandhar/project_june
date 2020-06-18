@@ -94,9 +94,9 @@ class ManageFolderView(View):
         # Permissions
         #--------------------------------------------------------------------------------- 
         #
-        self.data["full_permission"] = permissions_helper.has_access(user_id = request.user.id, is_folder = True, ins_id = parent_folder)
+        self.data["has_access"] = permissions_helper.has_access(user_id = request.user.id, is_folder = True, ins_id = parent_folder)
         
-        print(self.data["full_permission"])
+        print(self.data["has_access"])
 
         #---------------------------------------------------------------------------------
         # FILE UPLOADING FORM & FOLDER CREATION FORM
