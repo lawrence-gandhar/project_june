@@ -39,14 +39,39 @@ class ManageFolderPermissions(View):
     #
     #
     def get(self, request, company=None, parent_folder=None, ins=None):
+        try:
+            folder = user_model.FolderList.objects.get(pk = int(ins))
+        except:
+            return redirect("/unauthorized/", permanent=False)
         
-        xc = permissions_helper.get_folder_permissions(folder_id = ins, all_users = True)
+        self.data["users_permissions_list"] = permissions_helper.get_folder_permissions(folder_id = ins, all_users = True) 
         
-        self.data["users_permissions_list"] = xc 
+        self.data["form"] = configuration_forms.FolderPermissionsForm()        
     
         return render(request, self.template_name, self.data)
     
-    
+    #
+    #
+    #
+    def post(self, request, company=None, parent_folder=None, ins=None):
+            
+        try:
+            folder = user_model.FolderList.objects.get(pk = int(ins))
+        except:
+            return redirect("/unauthorized/", permanent=False)
+
+        try:
+            f_ins = user_model.FolderFilePermissions.objects.get(user=request.user, is_folder=True, folder = folder)
+            form = configuration_forms.FolderPermissionsForm(request.POST, instance=f_ins)
+        except:
+            form = configuration_forms.FolderPermissionsForm(request.POST)
+            
+        if form.is_valid():
+            form_ins = form.save(commit=False)
+            form_ins.folder = folder
+            
+            
+        
     
     
     

@@ -62,9 +62,7 @@ line-height: initial;
 							<td class="text-center">{{row.perms_replace|default_if_none:False}}</td>
 							<td class="text-center">{{row.perms_upload|default_if_none:False}}</td>
 							<td class="text-center">
-								<a href="">
-									<i title="Edit Folder Permissions" style="cursor:pointer; margin-right:10px;" class="mdi mdi-18px mdi-pencil text-success"></i>
-								</a>
+								<i title="Edit Folder Permissions" style="cursor:pointer; margin-right:10px;" class="mdi mdi-18px mdi-pencil text-success" onclick="update_permissions_modal({{row.user_id}})"></i>
 								<i onclick="delete_user({{row.id}})" title="Remove" style="cursor:pointer;" class="mdi mdi-18px mdi-delete text-danger"></i>    
 							</td>
 						</tr>
@@ -75,6 +73,7 @@ line-height: initial;
 	</div>
 </div>
 
+{% include 'app/permissions_config_management/update_permissions_modal.html' %}
 
 <script>
 

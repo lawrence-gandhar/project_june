@@ -1,0 +1,59 @@
+<div id="update_permissions_modal" class="modal" tabindex="-1" role="dialog" style="background-color:rgba(37, 38, 38, 0.56)">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+			<form action="" method="post">
+				<div class="modal-header" style="background-color:#00dbff">
+					<h5 class="modal-title">Update Permissions</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">                
+					{% csrf_token %}
+					<input type="hidden" name="redirecter" value="{{redirecter}}">
+					<input type="hidden" name="is_ajax" value="{{is_ajax}}">
+					<div class="form-group row">
+						<label for="fname" class="col-sm-7 text-right control-label col-form-label">Full Permission</label>
+						<div class="col-sm-5">
+							{{form.perms_grant_all}}
+						</div>
+					</div>
+					<div class="form-group row">	
+						<label for="fname" class="col-sm-7 text-right control-label col-form-label">Create Folder</label>
+						<div class="col-sm-5">
+							{{form.perms_create}}
+						</div>
+					</div>	
+					<div class="form-group row">
+						<label for="fname" class="col-sm-7 text-right control-label col-form-label">Delete Folder</label>
+						<div class="col-sm-5">
+							{{form.perms_delete}}
+						</div>
+					</div>	
+					<div class="form-group row">
+						<label for="fname" class="col-sm-7 text-right control-label col-form-label">Move Folder</label>
+						<div class="col-sm-5">
+							{{form.perms_move}}
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="fname" class="col-sm-7 text-right control-label col-form-label">Rename Folder</label>
+						<div class="col-sm-5">
+							{{form.perms_rename}}
+						</div>
+					</div>	
+					<div class="form-group row">
+						<label for="fname" class="col-sm-7 text-right control-label col-form-label">Upload In Folder</label>
+						<div class="col-sm-5">
+							{{form.perms_upload}}
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer text-center" >
+					<button type="submit" class="btn btn-primary">Save changes</button>
+					<button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>

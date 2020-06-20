@@ -7,6 +7,26 @@ from django.forms import *
 from app.constants import *
 from app.models import * 
 
+
+#======================================================================
+# FOLDER PERMISSIONS FORM
+#======================================================================
+#
+class FolderPermissionsForm(ModelForm):
+    class Meta:
+        model = user_model.FolderFilePermissions
+        fields = ('perms_grant_all', 'perms_create', 'perms_rename', 'perms_replace', 'perms_move', 'perms_delete', 'perms_upload',)
+        
+        widgets = {
+            'perms_grant_all' : Select(attrs = {'class':'form-control'}, choices=user_constants.IS_ACTIVE),
+            'perms_create' : Select(attrs = {'class':'form-control'}, choices=user_constants.IS_ACTIVE),
+            'perms_rename' : Select(attrs = {'class':'form-control'}, choices=user_constants.IS_ACTIVE),
+            'perms_replace' : Select(attrs = {'class':'form-control'}, choices=user_constants.IS_ACTIVE),
+            'perms_move' : Select(attrs = {'class':'form-control'}, choices=user_constants.IS_ACTIVE),
+            'perms_delete' : Select(attrs = {'class':'form-control'}, choices=user_constants.IS_ACTIVE),
+            'perms_upload' : Select(attrs = {'class':'form-control'}, choices=user_constants.IS_ACTIVE),
+        }
+
 #==========================================================================
 #   FILE UPLOADING CONFIGURATIONS FORM
 #==========================================================================
