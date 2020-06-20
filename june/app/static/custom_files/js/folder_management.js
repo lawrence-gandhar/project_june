@@ -40,3 +40,15 @@ function checkfile(sender) {
   }
   else return true;
 }
+
+
+/************************************************************/
+// CHECK FILE EXTENSION
+/************************************************************/
+
+function save_set_permissions(){
+	$("#redirect_to_permissions").val(1);
+	$("#add_folder_modal").find("form").submit();
+}
+
+

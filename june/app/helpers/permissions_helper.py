@@ -7,6 +7,9 @@ from app.constants import *
 
 import functools
 
+from django.db import connection
+
+
 #======================================================================
 # DECORATOR - TO ALLOW ACCESS ONLY TO ADMINs
 #======================================================================
@@ -147,3 +150,34 @@ def has_access(user_id = None, is_folder = True, ins_id = None):
             return ret_val
     return False
 
+
+#======================================================================
+# GET ACCESS RIGHTS OF FOLDER/FILE
+#======================================================================
+#
+
+def get_folder_permissions(folder_id = None, all_users = True):
+    with connection.cursor() as cursor:
+        cursor.execute("""select U.username, U.email, U.id as user_id, U.is_superuser, U.first_name, U.last_name,   
+            P.grant_all as p_grant_all, P.is_create as p_is_create, P.is_update as p_is_update,  
+            P.is_delete as p_is_delete, P.is_upload as p_is_upload, FFP.id as perms_id, FFP.perms_grant_all, 
+            FFP.perms_create, FFP.perms_delete, FFP.perms_move, FFP.perms_rename, FFP.perms_replace, 
+            FFP.perms_upload, P.usertype 
+            from auth_user U, app_folderlist FL
+            left join app_profile P on P.user_id = U.id
+            left join app_folderfilepermissions FFP on (FFP.folder_id = FL.id and FFP.user_id = U.id 
+            and FFP.is_folder = True)
+            where is_superuser = False and FL.id = %s""", [folder_id])
+        
+        q_results = cursor.fetchall()
+        columns = [column[0] for column in cursor.description]
+        ret_val = []
+        
+        for row in q_results:
+            ret_val.append(dict(zip(columns, row)))
+        
+    return ret_val    
+        
+        
+        
+        

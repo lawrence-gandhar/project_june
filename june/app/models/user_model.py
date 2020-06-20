@@ -239,12 +239,6 @@ class UploadedFiles(models.Model):
 #
  
 class FolderFilePermissions(models.Model):
-
-    set_for_all = models.BooleanField(
-        db_index = True,
-        null = False,
-        default = user_constants.IS_TRUE,
-    )
     
     user = models.ForeignKey(
         User,

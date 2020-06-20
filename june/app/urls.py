@@ -55,3 +55,15 @@ urlpatterns += [
 urlpatterns += [
     path('employee_company_view/', never_cache(login_required(company_management.EmpCompanyView)), name = 'employee_company_view'),
 ]    
+
+# Permissions & Configuration Management
+urlpatterns += [
+    path('manage_folder_permissions/<int:company>/<int:ins>/', never_cache(login_required(permissions_management.ManageFolderPermissions.as_view())), name = 'manage_folder_permissions'),
+    path('manage_folder_permissions/<int:company>/<int:parent_folder>/<int:ins>/', never_cache(login_required(permissions_management.ManageFolderPermissions.as_view())), name = 'manage_folder_permissions'),
+
+]    
+
+
+
+
+

@@ -198,11 +198,17 @@ class ManageFolderView(View):
             ins = form.save(commit=False)    
             ins.company = comp
             ins.save()
-          
+        
+        if request.POST["redirect_to_permissions"] == '1':
+            if parent_folder is None: 
+                return redirect("/manage_folder_permissions/{}/{}/".format(company, ins.id), permanent=False)
+            else:
+                return redirect("/manage_folder_permissions/{}/{}/{}/".format(company, parent_folder, ins.id), permanent=False) 
+        
         if parent_folder is None: 
-            return redirect("/manage_folder/"+str(company), permanent=False)
+            return redirect("/manage_folder/{}/".format(company), permanent=False)
         else:
-            return redirect("/manage_folder/"+str(company)+"/"+str(parent_folder)+"/", permanent=False)
+            return redirect("/manage_folder/{}/{}/".format(company, parent_folder), permanent=False)
         
 
 #======================================================================

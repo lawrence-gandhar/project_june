@@ -1,0 +1,83 @@
+<style>
+
+.table td{
+padding: 0.5rem 0.5rem 0.1rem 0.5rem;
+line-height: initial;
+}
+
+
+</style>
+
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="card" style="overflow:auto;">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th scope="col" colspan="5"></th>
+						<th scope="col" colspan="5" class="text-center" style="background: #27a9e3; opacity: 1;  color:#FFFFFF; font-weight:bold;"> Master Permissions</th>
+						<th scope="col" colspan="7" class="text-center" style="background: #458a1a; opacity: 1;  color:#FFFFFF; font-weight:bold;"> Folder Permissions</th>
+						<th scope="col"></th>
+					</tr>
+					<tr>
+						<th style="background: #000000; opacity: 0.7; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Username</th>
+						<th style="background: #000000; opacity: 0.7; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Usertype</th>
+						<th style="background: #000000; opacity: 0.7; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Firstname</th>
+						<th style="background: #000000; opacity: 0.7; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Lastname</th>
+						<th style="background: #000000; opacity: 0.7; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Email</th>
+						<th style="background: #27a9e3; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Full Access</th>						
+						<th style="background: #27a9e3; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Create</th>
+						<th style="background: #27a9e3; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Update</th>
+						<th style="background: #27a9e3; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Delete</th>
+						<th style="background: #27a9e3; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Upload</th>
+						<th style="background: #458a1a; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Full Access</th>						
+						<th style="background: #458a1a; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Create</th>
+						<th style="background: #458a1a; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Delete</th>
+						<th style="background: #458a1a; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Move</th>
+						<th style="background: #458a1a; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Rename</th>
+						<th style="background: #458a1a; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Replace</th>
+						<th style="background: #458a1a; opacity: 1; color:#FFFFFF; font-weight:bold;" scope="col" class="text-center">Upload</th>
+						<th style="background: #000000; opacity: 0.7; color:#FFFFFF; font-weight:bold; width:70px" scope="col" class="text-center">Actions</th>
+					</tr>
+				</thead>
+				<tbody style="font-size:11px">
+					{% for row in users_permissions_list %}
+						<tr>
+							<td>{{row.username}}</td>
+							<td>{{row.usertype}}</td>
+							<td>{{row.first_name|default_if_none:"-"}}</td>
+							<td>{{row.last_name|default_if_none:"-"}}</td>
+							<td>{{row.email|default_if_none:"-"}}</td>
+							<td class="text-center">{{row.p_grant_all|default_if_none:False}}</td>
+							<td class="text-center">{{row.p_is_create|default_if_none:False}}</td>
+							<td class="text-center">{{row.p_is_update|default_if_none:False}}</td>
+							<td class="text-center">{{row.p_is_delete|default_if_none:False}}</td>							
+							<td class="text-center">{{row.p_is_upload|default_if_none:False}}</td>
+							<td class="text-center">{{row.perms_grant_all|default_if_none:False}}</td>
+							<td class="text-center">{{row.perms_create|default_if_none:False}}</td>
+							<td class="text-center">{{row.perms_delete|default_if_none:False}}</td>
+							<td class="text-center">{{row.perms_move|default_if_none:False}}</td>							
+							<td class="text-center">{{row.perms_rename|default_if_none:False}}</td>
+							<td class="text-center">{{row.perms_replace|default_if_none:False}}</td>
+							<td class="text-center">{{row.perms_upload|default_if_none:False}}</td>
+							<td class="text-center">
+								<a href="">
+									<i title="Edit Folder Permissions" style="cursor:pointer; margin-right:10px;" class="mdi mdi-18px mdi-pencil text-success"></i>
+								</a>
+								<i onclick="delete_user({{row.id}})" title="Remove" style="cursor:pointer;" class="mdi mdi-18px mdi-delete text-danger"></i>    
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+<script>
+
+	csrf_token = '{{csrf_token}}';
+
+</script>
