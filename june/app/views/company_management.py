@@ -161,6 +161,7 @@ def delete_company(request, ins=None):
                 try:
                     folder_path = os.path.join(settings.COMPANY_FOLDER_PATH,company.folder_name)
                     shutil.rmtree(folder_path)
+
                 except:
                     return HttpResponse(0)   
             company.delete()            
@@ -181,6 +182,12 @@ def delete_company_folder(request, ins = None):
             company = user_model.Company.objects.get(pk = int(ins))            
             try:
                 folder_path = os.path.join(settings.COMPANY_FOLDER_PATH,company.folder_name)
+                
+                user_model.FolderList.objects.filter(company = company).delete()
+                
+                company.folder_name = None
+                company.save()                
+                
             except:
                 return HttpResponse(1)
                 

@@ -15,9 +15,19 @@ $(document).ready(function(){
 $("#id_password2").on("focusout", function(){
 	
 	confirm_passwd = $(this).val();
-	
+	main_passwd = $("#id_password1").val();
+		
 	if(confirm_passwd!=""){
-		match_fields_data($(this),$("#id_password1"));
+		if(main_passwd !== confirm_passwd){
+			$("#passwd_error").text("Password and Confirm Password does not match");
+			$("#id_password2").focus();
+			$(".save_button").prop("disabled", true);
+		}else{
+			$(".save_button").prop("disabled", false);
+		}
+	}else{
+		$("#passwd_error").text("confirm Password is required.");
+		$("#id_password2").focus();
 	}
 });
 
