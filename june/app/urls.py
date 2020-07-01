@@ -14,6 +14,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name = 'app/base/logout.html'), name = 'logout'),
     re_path(r'^accounts/*', RedirectView.as_view(pattern_name='login', permanent=True)),
     path('unauthorized/', login_required(base.UnAuthorized.as_view()), name = 'unauthorized'),
+    path('reset_password/<int:ins>/', login_required(user_management.reset_password), name="reset_password")
 ]    
 
 # User Management

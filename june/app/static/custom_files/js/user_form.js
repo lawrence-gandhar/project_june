@@ -20,14 +20,13 @@ $("#id_password2").on("focusout", function(){
 	if(confirm_passwd!=""){
 		if(main_passwd !== confirm_passwd){
 			$("#passwd_error").text("Password and Confirm Password does not match");
-			$("#id_password2").focus();
 			$(".save_button").prop("disabled", true);
 		}else{
 			$(".save_button").prop("disabled", false);
+			$("#passwd_error").text("");
 		}
 	}else{
-		$("#passwd_error").text("confirm Password is required.");
-		$("#id_password2").focus();
+		$("#passwd_error").text("Confirm Password is required.");
 	}
 });
 
@@ -44,6 +43,10 @@ $("#id_usertype").on("change", function(){
 	}
 });
 
+//***********************************************************************
+// Delete User
+//***********************************************************************
+//
 
 function delete_user(ids){
 	$.get("/delete_user/"+ids, function(data){
@@ -55,6 +58,19 @@ function delete_user(ids){
 	});
 }
 
+//***********************************************************************
+// Reset Password
+//***********************************************************************
+//
+
+function reset_password(id){
+	$.get("/reset_password/"+id+"/", function(data){
+		console.log(data);
+		
+		$("#reset_password").modal('show');
+		$("#reset_password_data").empty().text(data);
+	});
+}
 
 
 

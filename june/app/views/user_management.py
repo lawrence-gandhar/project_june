@@ -193,3 +193,21 @@ def delete_user(request, ins=None):
         user.delete()
     return HttpResponse(0)
         
+        
+#======================================================================
+# Reset Password
+#======================================================================
+#  
+
+def reset_password(request, ins=None):
+    if ins is not None:
+        password = User.objects.make_random_password()
+        
+        try:
+            user = User.objects.get(pk = int(ins))
+            user.set_password(password)
+            user.save()
+            return HttpResponse(password)            
+        except:
+            return HttpResponse(0)
+    return HttpResponse(0)
