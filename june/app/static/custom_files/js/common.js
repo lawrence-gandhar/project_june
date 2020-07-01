@@ -43,8 +43,14 @@ $("#id_password2").on("focusout", function(){
 			$("#passwd_error").text("Password and Confirm Password does not match");
 			$(".save_button").prop("disabled", true);
 		}else{
-			$(".save_button").prop("disabled", false);
-			$("#passwd_error").text("");
+			
+			if(main_passwd.length < 8){
+				$("#passwd1_error").text("This password must contain at least 8 characters.");
+			}else{
+				$("#passwd1_error").text("");		
+				$(".save_button").prop("disabled", false);
+				$(".error").text("");
+			}
 		}
 	}else{
 		$("#passwd_error").text("Confirm Password is required.");
@@ -63,19 +69,9 @@ $("#id_password1").on("focusout", function(){
 	if(passwd.length < 8){
 		$("#passwd1_error").text("This password must contain at least 8 characters.");
 	}else{
-		$("#passwd1_error").text("");
+		$("#passwd1_error").text("");		
 	}
 });
-
-
-//***********************************************************************
-// Change Password
-//***********************************************************************
-//
-
-function change_password(){
-	$("#change_password_modal").modal('show');
-}
 
 
 //***********************************************************************
@@ -92,8 +88,9 @@ $("form").on("reset", function(){
 //***********************************************************************
 //
 
-$('body').on('hidden.bs.modal', '.modal', function(){
-	$(this).removeData('bs.modal');
+$('.modal').on('hidden.bs.modal', function(){
+	$("input").val("");
+	$(".error").text("");
 });
 
 
