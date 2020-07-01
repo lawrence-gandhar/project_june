@@ -211,3 +211,21 @@ def reset_password(request, ins=None):
         except:
             return HttpResponse(0)
     return HttpResponse(0)
+    
+    
+#======================================================================
+# Change Password
+#======================================================================
+#  
+
+def change_password(request):
+    if request.POST:
+        try:
+            user = User.objects.get(user = request.user)
+            user.set_password(request.POST["password1"])
+            user.save()
+            return HttpResponse("Paaword Changed Successfully")           
+        except:
+            return HttpResponse(0) 
+    return HttpResponse(0) 
+    
