@@ -204,6 +204,10 @@
         <!-- ============================================================== -->
         <!-- End Page wrapper  -->
         <!-- ============================================================== -->
+		
+		{% include 'app/user_management/password_modal.html' %}
+		
+		
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
@@ -224,6 +228,7 @@
     <script src="{% static 'base_files/js/sidebarmenu.js' %}"></script>
     <!--Custom JavaScript -->
     <script src="{% static 'base_files/js/custom.min.js' %}"></script>
+	<script src="{% static 'custom_files/js/common.js' %}"></script>
 	
     {% load_javascript_files js_files %} 
 </body>

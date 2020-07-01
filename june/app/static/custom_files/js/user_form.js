@@ -6,30 +6,6 @@ $(document).ready(function(){
 	
 });
 
-
-//***********************************************************************
-// Check Confirm Password
-//***********************************************************************
-//
-
-$("#id_password2").on("focusout", function(){
-	
-	confirm_passwd = $(this).val();
-	main_passwd = $("#id_password1").val();
-		
-	if(confirm_passwd!=""){
-		if(main_passwd !== confirm_passwd){
-			$("#passwd_error").text("Password and Confirm Password does not match");
-			$(".save_button").prop("disabled", true);
-		}else{
-			$(".save_button").prop("disabled", false);
-			$("#passwd_error").text("");
-		}
-	}else{
-		$("#passwd_error").text("Confirm Password is required.");
-	}
-});
-
 //***********************************************************************
 // Check Usertype
 //***********************************************************************

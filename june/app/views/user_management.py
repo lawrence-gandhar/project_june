@@ -221,11 +221,25 @@ def reset_password(request, ins=None):
 def change_password(request):
     if request.POST:
         try:
-            user = User.objects.get(user = request.user)
-            user.set_password(request.POST["password1"])
-            user.save()
-            return HttpResponse("Paaword Changed Successfully")           
+            if validate_password(request.POST["password1"]):
+                user = User.objects.get(user = request.user)
+                user.set_password(request.POST["password1"])
+                user.save()
+                return HttpResponse("Password Changed Successfully")        
+            return HttpResponse(0) 
         except:
             return HttpResponse(0) 
     return HttpResponse(0) 
+ 
+ 
+#======================================================================
+# Validate Password
+#======================================================================
+#
+
+def validate_password(password):
+    if len(password) < 8:
+        return False
+    return True
     
+ 
