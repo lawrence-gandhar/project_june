@@ -58,17 +58,4 @@ class ProfileForm(ModelForm):
             'is_delete' : CheckboxInput(attrs = {'class':'custom-control-input', 'value':'1'},), 
             'is_upload' : CheckboxInput(attrs = {'class':'custom-control-input', 'value':'1'},),
         }
-        
-#
-#
-#
-class PasswordForm(UserCreationForm):
-    class Meta:
-        model = User
-        
-        fields = ('password1', 'password2',)
-        
-        widgets = {
-            'password1' : TextInput(attrs = {'class':'form-control', 'type':'password', 'required':'true'}),
-            'password2' : TextInput(attrs = {'class':'form-control', 'type':'password', 'required':'true', }),
-        }
+   

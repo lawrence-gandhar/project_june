@@ -69,7 +69,28 @@ $("#id_password1").on("focusout", function(){
 	if(passwd.length < 8){
 		$("#passwd1_error").text("This password must contain at least 8 characters.");
 	}else{
-		$("#passwd1_error").text("");		
+		confirm_passwd = $("#id_password2").val();
+		main_passwd = $("#id_password1").val();
+			
+		if(confirm_passwd!=""){
+			if(main_passwd !== confirm_passwd){
+				$("#passwd_error").text("Password and Confirm Password does not match");
+				$(".save_button").prop("disabled", true);
+			}else{
+				
+				if(main_passwd.length < 8){
+					$("#passwd1_error").text("This password must contain at least 8 characters.");
+				}else{
+					$("#passwd1_error").text("");		
+					$(".save_button").prop("disabled", false);
+					$(".error").text("");
+				}
+			}
+		}else{
+			$("#passwd_error").text("Confirm Password is required.");
+		}
+		
+		$("#passwd1_error").text("");	
 	}
 });
 
@@ -84,7 +105,7 @@ $("form").on("reset", function(){
 });
 
 //***********************************************************************
-// On Reset Button Click
+// Modal Close
 //***********************************************************************
 //
 
@@ -92,6 +113,22 @@ $('.modal').on('hidden.bs.modal', function(){
 	$("input").val("");
 	$(".error").text("");
 });
+
+
+//***********************************************************************
+// Change Password
+//***********************************************************************
+//
+
+function change_password(){
+	form_d = $("#change_password_form").serialize();
+	
+	$("#change_password_modal").modal('hide');
+	
+	$.post("/change_password/",form_d, function(data){
+		alert(data);
+	});
+}
 
 
 

@@ -5,6 +5,7 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.contrib.auth import update_session_auth_hash
 
 from collections import defaultdict
 
@@ -220,16 +221,13 @@ def reset_password(request, ins=None):
 
 def change_password(request):
     if request.POST:
-        try:
-            if validate_password(request.POST["password1"]):
-                user = User.objects.get(user = request.user)
-                user.set_password(request.POST["password1"])
-                user.save()
-                return HttpResponse("Password Changed Successfully")        
-            return HttpResponse(0) 
-        except:
-            return HttpResponse(0) 
-    return HttpResponse(0) 
+        if validate_password(request.POST["password1"]):
+            request.user.set_password(request.POST["password1"])
+            update_session_auth_hash(request, request.user)
+            request.user.save()
+            return HttpResponse("Password Changed Successfully")        
+        return HttpResponse('This password must contain at least 8 characters.') 
+    return HttpResponse(0)   
  
  
 #======================================================================

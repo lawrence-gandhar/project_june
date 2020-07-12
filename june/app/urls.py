@@ -15,6 +15,7 @@ urlpatterns = [
     re_path(r'^accounts/*', RedirectView.as_view(pattern_name='login', permanent=True)),
     path('unauthorized/', login_required(base.UnAuthorized.as_view()), name = 'unauthorized'),
     path('reset_password/<int:ins>/', login_required(user_management.reset_password), name="reset_password"),
+    path('change_password/', login_required(user_management.change_password), name="change_password"),
 ]    
 
 # User Management
